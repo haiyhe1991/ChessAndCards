@@ -1,4 +1,4 @@
-#maumau
+#chessAndCards
 
 
 cocos2dx 版本 3.8.1
