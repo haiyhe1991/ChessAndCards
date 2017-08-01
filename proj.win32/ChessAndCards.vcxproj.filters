@@ -1,0 +1,239 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="win32">
+      <UniqueIdentifier>{84a8ebd7-7cf0-47f6-b75e-d441df67da40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resource">
+      <UniqueIdentifier>{715254bc-d70b-4ec5-bf29-467dd3ace079}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{bb6c862e-70e9-49d9-81b7-3829a6f50471}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\csv">
+      <UniqueIdentifier>{3e2cf3ac-fa30-4b8c-b8be-cc4db829b8d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\layer">
+      <UniqueIdentifier>{9a64561b-14c9-4542-9241-6a81f1a27a6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\layer\fight">
+      <UniqueIdentifier>{08222297-3cb0-40bc-a595-78b6f4b8203b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\layer\fight\card">
+      <UniqueIdentifier>{d665c5d8-4f01-4d86-90af-5767825976d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\layer\login">
+      <UniqueIdentifier>{622e1253-8803-4519-8510-8ed4ddf634bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\layer\main">
+      <UniqueIdentifier>{1488218a-3b2c-456e-afcb-b2f4d71c6362}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\layer\shade">
+      <UniqueIdentifier>{46ae5713-d027-456e-a379-f2727d911040}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\logic">
+      <UniqueIdentifier>{badbb778-24ee-41fc-8023-ee6348b09355}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\msg">
+      <UniqueIdentifier>{d560b20e-ed34-4f5e-8484-42d506a18091}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\resource">
+      <UniqueIdentifier>{497fd7e5-20ed-407e-bdbf-a9361f59b166}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\stage">
+      <UniqueIdentifier>{cdc49530-6048-41f7-af34-a748a09b7992}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\tcp">
+      <UniqueIdentifier>{7a702788-f2fb-494c-9305-00488c0678cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\tools">
+      <UniqueIdentifier>{5772cf90-f909-4552-bd54-19fd1d873cdf}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\csv\csv.cpp">
+      <Filter>src\csv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\csv\CsvData.cpp">
+      <Filter>src\csv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\csv\NameCsv.cpp">
+      <Filter>src\csv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\layer\BaseLayer.cpp">
+      <Filter>src\layer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\layer\CardLayer.cpp">
+      <Filter>src\layer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\layer\LoadingLayer.cpp">
+      <Filter>src\layer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\layer\LoginLayer.cpp">
+      <Filter>src\layer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\layer\LogoLayer.cpp">
+      <Filter>src\layer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\layer\MainLayer.cpp">
+      <Filter>src\layer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\layer\fight\card\CardLayout.cpp">
+      <Filter>src\layer\fight\card</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\layer\login\LoginLayout.cpp">
+      <Filter>src\layer\login</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\layer\main\MainLayout.cpp">
+      <Filter>src\layer\main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\layer\shade\RecvingLayer.cpp">
+      <Filter>src\layer\shade</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\layer\shade\ShadeLayer.cpp">
+      <Filter>src\layer\shade</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\logic\ChessLogic.cpp">
+      <Filter>src\logic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\logic\PlayerLogic.cpp">
+      <Filter>src\logic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\logic\TcpLogic.cpp">
+      <Filter>src\logic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\logic\WaitTime.cpp">
+      <Filter>src\logic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\logic\CenterLogic.cpp">
+      <Filter>src\logic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\msg\message.cpp">
+      <Filter>src\msg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\resource\ResourceManager.cpp">
+      <Filter>src\resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\stage\stage.cpp">
+      <Filter>src\stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\tcp\LinkServer.cpp">
+      <Filter>src\tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\tcp\CGameSocket.cpp">
+      <Filter>src\tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\tcp\LicenseServer.cpp">
+      <Filter>src\tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\tools\TickManager.cpp">
+      <Filter>src\tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\tools\TimeTools.cpp">
+      <Filter>src\tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\tools\StringTools.cpp">
+      <Filter>src\tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\AppDelegate.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="main.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\csv\csv.h">
+      <Filter>src\csv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\layer\BaseLayer.h">
+      <Filter>src\layer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\layer\CardLayer.h">
+      <Filter>src\layer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\layer\layer_header.h">
+      <Filter>src\layer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\layer\load.h">
+      <Filter>src\layer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\layer\LoadingLayer.h">
+      <Filter>src\layer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\layer\LoginLayer.h">
+      <Filter>src\layer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\layer\LogoLayer.h">
+      <Filter>src\layer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\layer\MainLayer.h">
+      <Filter>src\layer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\layer\shade\ShadeLayer.h">
+      <Filter>src\layer\shade</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\logic\GameLogic.h">
+      <Filter>src\logic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\logic\TcpLogic.h">
+      <Filter>src\logic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\msg\message.h">
+      <Filter>src\msg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\resource\ResourceManager.h">
+      <Filter>src\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\stage\stage.h">
+      <Filter>src\stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\tcp\LicenseServer.h">
+      <Filter>src\tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\tcp\LinkServer.h">
+      <Filter>src\tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\tcp\ProtocolModule.h">
+      <Filter>src\tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\tcp\ServiceChat.h">
+      <Filter>src\tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\tcp\ServiceCmdCode.h">
+      <Filter>src\tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\tcp\ServiceErrorCode.h">
+      <Filter>src\tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\tcp\ServiceHeader.h">
+      <Filter>src\tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\tcp\ServiceLicence.h">
+      <Filter>src\tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\tcp\ServiceLinker.h">
+      <Filter>src\tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\tcp\CGameSocket.h">
+      <Filter>src\tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\tools\TickManager.h">
+      <Filter>src\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\tools\TimeTools.h">
+      <Filter>src\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\tools\StringTools.h">
+      <Filter>src\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\AppDelegate.h" />
+    <ClInclude Include="..\Classes\chessAndCards.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="game.rc">
+      <Filter>resource</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
