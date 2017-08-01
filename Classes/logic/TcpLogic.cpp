@@ -1,7 +1,6 @@
 #include "TcpLogic.h"
 #include "tcp/LicenseServer.h"
 #include "tcp/LinkServer.h"
-#include "layer/layer_header.h"
 
 TcpLogic *TcpLogic::_instance = NULL;
 TcpLogic* TcpLogic::GetInstance()
@@ -180,13 +179,7 @@ int TcpLogic::RegistUserRes(SGSResPayload* pBuf, int pBufLen)
 {
 	state = RecvState::RECVING;
 	wait->StartWait(0);
-	//MsgManager::GetInstance()->Dispather(MessageHead::MSG_REGIST_RES, &(pBuf->retCode)); 
-	if (pBuf->retCode == LCS_OK)
-	{
-		MainLayer* mainLayer = MainLayer::create();
-		mainLayer->retain();
-		MsgManager::GetInstance()->Dispather(MessageHead::MSG_START_LOADING, mainLayer);
-	}
+	MsgManager::GetInstance()->Dispather(MessageHead::MSG_REGIST_RES, &(pBuf->retCode)); 
 	return LCS_OK;
 }
 int TcpLogic::LoginUserRes(SGSResPayload* pBuf, int pBufLen)

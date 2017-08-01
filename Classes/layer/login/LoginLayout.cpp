@@ -70,8 +70,6 @@ void LoginLayout::onRegHandler(Ref* sender)
 		this->addChild(recv, INT_MAX);
 		if (TcpLogic::GetInstance()->RegistUserReq(tbName->getString().c_str(), tbPassword->getString().c_str()))
 		{
-			recv = RecvingLayer::create();
-			this->addChild(recv, INT_MAX);
 			MsgManager::GetInstance()->Dispather(MessageHead::MSG_REGIST_REQ, nullptr);
 		}
 		else
@@ -141,7 +139,6 @@ int LoginLayout::LoginUserRes(void* pBuf)
 		MessageBox(str, "ÌבÊ¾");
 		return -1;
 	}
-	this->removeRecvingLayer();
 	MainLayer* mainLayer = MainLayer::create();
 	mainLayer->retain();
 	MsgManager::GetInstance()->Dispather(MessageHead::MSG_START_LOADING, mainLayer);
@@ -161,6 +158,7 @@ void LoginLayout::OnMessage(const int head, void* data)
 		RegistUserRes(data);
 		break;
 	case MSG_LOGIN_RES:
+		this->removeRecvingLayer();
 		LoginUserRes(data);
 		break;
 	default:
