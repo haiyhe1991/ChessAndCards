@@ -14,6 +14,7 @@ public:
 
 	CREATE_FUNC(LoginLayout);
 
+	LoginLayout();
 	~LoginLayout();
 
 private:
@@ -32,7 +33,10 @@ private:
 	void					registerMessage();
 	void					unregisterMessage();
 
+	void					addRecvingLayer();				//添加接收界面
 	void					removeRecvingLayer();			//移除接收界面
+
+	void					LoginChangeSence(float a);		//登陆切换界面回调函数
 
 	//参数：服务器返回代码
 	int						RegistUserRes(void* pBuf);		//注册用户反馈结果

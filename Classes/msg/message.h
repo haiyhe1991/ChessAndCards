@@ -12,15 +12,18 @@ enum MessageHead
 	MSG_CHANGE_SCENE					= 1001,			//切换场景信息   封装之后，不存在场景了，只有各种层
 	MSG_START_LOADING					= 1002,			//开始加载界面
 
-	MSG_REQ_OUT_TIME					= 2000,			//请求超时
-	MSG_REGIST_REQ						= 2001,			//注册请求
-	MSG_REGIST_RES						= 2002,			//注册响应
-	MSG_LOGIN_REQ						= 2003,			//登录请求
-	MSG_LOGIN_RES						= 2004,			//登录响应
-	MSG_QUERY_PARTITION_REQ				= 2005,			//查询分区请求
-	MSG_QUERY_PARTITION_RES				= 2006,			//查询分区响应
-	MSG_ENTER_PARTITION_REQ				= 2007,			//进入分区请求
-	MSG_ENTER_PARTITION_RES				= 2008,			//进入分区响应
+	MSG_CONNECT_LICENSE_RES				= 2001,			//连接license响应
+	MSG_REQ_OUT_TIME					= 2002,			//请求超时
+	MSG_REGIST_RES						= 2004,			//注册响应
+	MSG_LOGIN_RES						= 2006,			//登录响应
+	MSG_QUERY_PARTITION_RES				= 2008,			//查询分区响应
+	MSG_ENTER_PARTITION_RES				= 2010,			//进入分区响应
+	MSG_CONNECT_LINK_RES				= 2012,			//连接link响应
+	MSG_LOGIN_LINK_RES					= 2014,			//登陆link响应
+	MSG_QUERY_ROLE_RES					= 2015,			//查询角色响应
+	MSG_CREATE_ROLE_RES					= 2016,			//创建角色响应
+	MSG_ENTER_ROLE_RES					= 2017,			//进入角色响应
+	MSG_JOIN_CHANNEL_RES				= 2018,			//加入频道响应
 
 	MSG_START_GAME						= 3001,			//开始游戏
 	MSG_ACTION_CHESS					= 3002,			//玩家动作

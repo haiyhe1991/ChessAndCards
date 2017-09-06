@@ -28,7 +28,7 @@ public:
 
 	bool									EnterPartitionReq(SUserEnterPartitionReq*	pUserEnterPartitionReq);		//进入分区请求
 
-	void									CloeseLicense();											//关闭验证服务器连接
+	void									CloseLicense();											//关闭验证服务器连接
 
 private:
 	LicenseServer();																		//构造

@@ -4,6 +4,7 @@
 #include "chessAndCards.h"
 #include "CGameSocket.h"
 #include "tcp/ServiceHeader.h"
+#include "logic/TcpLogic.h"
 
 class LinkServer
 {
@@ -21,9 +22,17 @@ public:
 
 	void									CloseLink();							//关闭socket
 
-	bool									LoginLinkerReq(SLoginLinkerReq* pUserRegistReq);//请求登录linker
+	bool									LoginLinkerReq(SLoginLinkerReq* pLoginLinkerReq);//请求登录linker
 
+	bool									QueryRolesReq(SQueryRolesReq* req);			//查询角色
 
+	bool									CreateRoleReq(SCreateRoleReq* req);			//创建角色
+
+	bool									EnterRoleReq(SEnterRoleReq* pEnterRoleReq);	//进入角色
+
+	bool									JoinChannelReq(SJoinChannelReq* req);			//加入聊天频道请求
+
+	bool									ChatMessageSend(BYTE* pChat);//发送聊天信息
 
 private:
 
@@ -36,6 +45,9 @@ private:
 	bool									RecvThreadState;								//link服务器接收数据线程开关
 
 	char									m_key[DEFAULT_KEY_SIZE + 1];
+
+	typedef int (TcpLogic::*fnLgProcessHandler)(SGSResPayload* payload, int nPayloadLen);	//link服务器接收数据对应函数
+	map<UINT16, fnLgProcessHandler>			m_lgProcHandler;								//link服务器接收数据对应函数容器
 };
 
 

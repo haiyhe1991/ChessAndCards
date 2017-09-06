@@ -230,6 +230,12 @@
     </ClInclude>
     <ClInclude Include="..\Classes\AppDelegate.h" />
     <ClInclude Include="..\Classes\chessAndCards.h" />
+    <ClInclude Include="..\Classes\tcp\ServiceMLogic.h">
+      <Filter>src\tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\tcp\ServiceCommon.h">
+      <Filter>src\tcp</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">

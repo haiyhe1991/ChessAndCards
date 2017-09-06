@@ -7,5 +7,7 @@
 #include "ServiceErrorCode.h"
 #include "ServiceLicence.h"
 #include "ServiceLinker.h"
+#include "ServiceChat.h"
+#include "ServiceMLogic.h"
 
 #endif

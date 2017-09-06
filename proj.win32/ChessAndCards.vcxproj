@@ -199,10 +199,12 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\tcp\ProtocolModule.h" />
     <ClInclude Include="..\Classes\tcp\ServiceChat.h" />
     <ClInclude Include="..\Classes\tcp\ServiceCmdCode.h" />
+    <ClInclude Include="..\Classes\tcp\ServiceCommon.h" />
     <ClInclude Include="..\Classes\tcp\ServiceErrorCode.h" />
     <ClInclude Include="..\Classes\tcp\ServiceHeader.h" />
     <ClInclude Include="..\Classes\tcp\ServiceLicence.h" />
     <ClInclude Include="..\Classes\tcp\ServiceLinker.h" />
+    <ClInclude Include="..\Classes\tcp\ServiceMLogic.h" />
     <ClInclude Include="..\Classes\tools\StringTools.h" />
     <ClInclude Include="..\Classes\tools\TickManager.h" />
     <ClInclude Include="..\Classes\tools\TimeTools.h" />

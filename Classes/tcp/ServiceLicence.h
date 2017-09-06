@@ -1,9 +1,7 @@
 #ifndef __SERVICE_LICENCE_H__
 #define __SERVICE_LICENCE_H__
 
-typedef unsigned int  UINT32;
-typedef unsigned short  UINT16;
-typedef unsigned char  BYTE;
+#include "ServiceCommon.h"
 
 #if defined(_MSC_VER) && _MSC_VER > 1000
 	#pragma once

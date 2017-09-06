@@ -3,6 +3,12 @@
 #include "aes.h"
 #include "logic/TcpLogic.h"
 
+#define ADD_LINK_PROC_HANDLER(cmdCode, fun) \
+do \
+		{   \
+		m_lgProcHandler.insert(std::make_pair(cmdCode, &TcpLogic::fun));  \
+		} while (0)
+
 LinkServer *LinkServer::_instance = NULL;
 LinkServer* LinkServer::GetInstance()
 {
@@ -24,6 +30,11 @@ LinkServer::LinkServer()
 {
 	memset(m_key, 0, sizeof(m_key));
 	strcpy(m_key, DEFAULT_TOKEN_KEY);
+	ADD_LINK_PROC_HANDLER(LINKER_LOGIN, LoginLinkerRes);
+	ADD_LINK_PROC_HANDLER(MLS_QUERY_ROLES, QueryRolesRes);
+	ADD_LINK_PROC_HANDLER(MLS_CREATE_ROLE, CreateRoleRes);
+	ADD_LINK_PROC_HANDLER(MLS_ENTER_ROLE, EnterRoleRes);
+	ADD_LINK_PROC_HANDLER(CHAT_JOIN_CHANNEL, JoinChannelRes);
 }
 
 LinkServer::~LinkServer()
@@ -79,21 +90,22 @@ void LinkServer::RecvData()
 			pResPayload->ntoh();
 
 			int retCode = LCS_OK;
-			//std::map<UINT16, fnLgProcessHandler>::iterator it = m_lgProcHandler.find(pResPayload->cmdCode);
-			//if (it != m_lgProcHandler.end())
-			//	retCode = (this->*(it->second))(pResPayload, pResPayload->rawDataBytes);
+			std::map<UINT16, fnLgProcessHandler>::iterator it = m_lgProcHandler.find(pResPayload->cmdCode);
+			if (it != m_lgProcHandler.end())
+				retCode = (TcpLogic::GetInstance()->*(it->second))(pResPayload, pResPayload->rawDataBytes);
 
 			if (pSGSHeader->pktType == ESGSPacketType::DATA_TOKEN_KEY_PACKET)
 			{
 				SConnectLinkerRes* pConnectLinkerRes = (SConnectLinkerRes*)(pResPayload->data);
 				pConnectLinkerRes->ntoh();
 				memcpy(m_key, pConnectLinkerRes->key, DEFAULT_KEY_SIZE);
+				TcpLogic::GetInstance()->ConnectLinkRes();
 			}
 		}
 	}
 }
 
-bool LinkServer::LoginLinkerReq(SLoginLinkerReq* pUserRegistReq)
+bool LinkServer::LoginLinkerReq(SLoginLinkerReq* pLoginLinkerReq)
 {
 	BOOL isCrypt = 1;
 	int nRawPayloadLen = SGS_REQ_HEAD_LEN + sizeof(SLoginLinkerReq);
@@ -112,10 +124,10 @@ bool LinkServer::LoginLinkerReq(SLoginLinkerReq* pUserRegistReq)
 	pReqPayload->token = GetTickCount();
 	pReqPayload->hton();
 
-	SLoginLinkerReq* UserRegistReq = (SLoginLinkerReq*)((char*)pReqPayload + SGS_REQ_HEAD_LEN);
-	UserRegistReq->userId = pUserRegistReq->userId;
-	strcpy(UserRegistReq->token, pUserRegistReq->token);
-	UserRegistReq->hton();
+	SLoginLinkerReq* LoginLinkerReq = (SLoginLinkerReq*)((char*)pReqPayload + SGS_REQ_HEAD_LEN);
+	LoginLinkerReq->userId = pLoginLinkerReq->userId;
+	strcpy(LoginLinkerReq->token, pLoginLinkerReq->token);
+	LoginLinkerReq->hton();
 
 	if (isCrypt)
 		appEncryptDataWithKey((AES_BYTE*)(p + SGS_PROTO_HEAD_LEN), nRawPayloadLen, m_key);
@@ -126,3 +138,181 @@ bool LinkServer::LoginLinkerReq(SLoginLinkerReq* pUserRegistReq)
 	}
 	return false;
 }
+
+bool LinkServer::QueryRolesReq(SQueryRolesReq* req)
+{
+	BOOL isCrypt = 1;
+	int nRawPayloadLen = SGS_REQ_HEAD_LEN + sizeof(SQueryRolesReq);
+	int nEncryptedPayloadLen = isCrypt ? ((nRawPayloadLen + 15) / 16) * 16 : nRawPayloadLen;
+
+	BYTE p[_MAX_MSGSIZE] = { 0 };
+	SGSProtocolHead* pSGSHeader = (SGSProtocolHead*)p;
+	pSGSHeader->isCrypt = isCrypt ? 1 : 0;
+	pSGSHeader->pktType = DATA_PACKET;
+	pSGSHeader->pduLen = nEncryptedPayloadLen;
+	pSGSHeader->hton();
+
+	SGSReqPayload* pReqPayload = (SGSReqPayload*)(p + SGS_PROTO_HEAD_LEN);
+	pReqPayload->rawDataBytes = nRawPayloadLen;
+	pReqPayload->cmdCode = MLS_QUERY_ROLES;
+	pReqPayload->token = GetTickCount();
+	pReqPayload->hton();
+
+	SQueryRolesReq* pCreateRoleReq = (SQueryRolesReq*)((char*)pReqPayload + SGS_REQ_HEAD_LEN);
+	pCreateRoleReq->userId = req->userId;
+	pCreateRoleReq->hton();
+
+	if (isCrypt)
+		appEncryptDataWithKey((AES_BYTE*)(p + SGS_PROTO_HEAD_LEN), nRawPayloadLen, m_key);
+
+	if (m_sock->SendMsg(p, SGS_PROTO_HEAD_LEN + nEncryptedPayloadLen))
+	{
+		return m_sock->Flush();
+	}
+	return false;
+}
+
+bool LinkServer::CreateRoleReq(SCreateRoleReq* req)
+{
+	BOOL isCrypt = 1;
+	int nRawPayloadLen = SGS_REQ_HEAD_LEN + sizeof(SCreateRoleReq);
+	int nEncryptedPayloadLen = isCrypt ? ((nRawPayloadLen + 15) / 16) * 16 : nRawPayloadLen;
+
+	BYTE p[_MAX_MSGSIZE] = { 0 };
+	SGSProtocolHead* pSGSHeader = (SGSProtocolHead*)p;
+	pSGSHeader->isCrypt = isCrypt ? 1 : 0;
+	pSGSHeader->pktType = DATA_PACKET;
+	pSGSHeader->pduLen = nEncryptedPayloadLen;
+	pSGSHeader->hton();
+
+	SGSReqPayload* pReqPayload = (SGSReqPayload*)(p + SGS_PROTO_HEAD_LEN);
+	pReqPayload->rawDataBytes = nRawPayloadLen;
+	pReqPayload->cmdCode = MLS_CREATE_ROLE;
+	pReqPayload->token = GetTickCount();
+	pReqPayload->hton();
+
+	SCreateRoleReq* pCreateRoleReq = (SCreateRoleReq*)((char*)pReqPayload + SGS_REQ_HEAD_LEN);
+	pCreateRoleReq->occuId = req->occuId;
+	pCreateRoleReq->sex = req->sex;
+	strcpy(pCreateRoleReq->nick, req->nick);
+
+	if (isCrypt)
+		appEncryptDataWithKey((AES_BYTE*)(p + SGS_PROTO_HEAD_LEN), nRawPayloadLen, m_key);
+
+	if (m_sock->SendMsg(p, SGS_PROTO_HEAD_LEN + nEncryptedPayloadLen))
+	{
+		return m_sock->Flush();
+	}
+	return false;
+}
+
+bool LinkServer::EnterRoleReq(SEnterRoleReq * pEnterRoleReq)
+{
+	BOOL isCrypt = 1;
+	int nRawPayloadLen = SGS_REQ_HEAD_LEN + sizeof(SEnterRoleReq);
+	int nEncryptedPayloadLen = isCrypt ? ((nRawPayloadLen + 15) / 16) * 16 : nRawPayloadLen;
+
+	BYTE p[_MAX_MSGSIZE] = { 0 };
+	SGSProtocolHead* pSGSHeader = (SGSProtocolHead*)p;
+	pSGSHeader->isCrypt = isCrypt ? 1 : 0;
+	pSGSHeader->pktType = DATA_PACKET;
+	pSGSHeader->pduLen = nEncryptedPayloadLen;
+	pSGSHeader->hton();
+
+	SGSReqPayload* pReqPayload = (SGSReqPayload*)(p + SGS_PROTO_HEAD_LEN);
+	pReqPayload->rawDataBytes = nRawPayloadLen;
+	pReqPayload->cmdCode = MLS_ENTER_ROLE;
+	pReqPayload->token = GetTickCount();
+	pReqPayload->hton();
+
+	SEnterRoleReq* EnterRoleReq = (SEnterRoleReq*)((char*)pReqPayload + SGS_REQ_HEAD_LEN);
+	EnterRoleReq->roleId = pEnterRoleReq->roleId;
+	EnterRoleReq->hton();
+
+	if (isCrypt)
+		appEncryptDataWithKey((AES_BYTE*)(p + SGS_PROTO_HEAD_LEN), nRawPayloadLen, m_key);
+
+	if (m_sock->SendMsg(p, SGS_PROTO_HEAD_LEN + nEncryptedPayloadLen))
+	{
+		return m_sock->Flush();
+	}
+	return false;
+}
+
+bool LinkServer::JoinChannelReq(SJoinChannelReq* req)
+{
+	BOOL isCrypt = 1;
+	int nRawPayloadLen = SGS_REQ_HEAD_LEN + sizeof(SJoinChannelReq);
+	int nEncryptedPayloadLen = isCrypt ? ((nRawPayloadLen + 15) / 16) * 16 : nRawPayloadLen;
+
+	BYTE p[_MAX_MSGSIZE] = { 0 };
+	SGSProtocolHead* pSGSHeader = (SGSProtocolHead*)p;
+	pSGSHeader->isCrypt = isCrypt ? 1 : 0;
+	pSGSHeader->pktType = DATA_PACKET;
+	pSGSHeader->pduLen = nEncryptedPayloadLen;
+	pSGSHeader->hton();
+
+	SGSReqPayload* pReqPayload = (SGSReqPayload*)(p + SGS_PROTO_HEAD_LEN);
+	pReqPayload->rawDataBytes = nRawPayloadLen;
+	pReqPayload->cmdCode = CHAT_JOIN_CHANNEL;
+	pReqPayload->token = GetTickCount();
+	pReqPayload->hton();
+
+	SJoinChannelReq* pJoinChannelReq = (SJoinChannelReq*)((char*)pReqPayload + SGS_REQ_HEAD_LEN);
+	pJoinChannelReq->channel = req->channel;
+	pJoinChannelReq->joinId = req->joinId;
+	strcpy(pJoinChannelReq->nick, req->nick);
+	pJoinChannelReq->hton();
+
+	if (isCrypt)
+		appEncryptDataWithKey((AES_BYTE*)(p + SGS_PROTO_HEAD_LEN), nRawPayloadLen, m_key);
+
+	if (m_sock->SendMsg(p, SGS_PROTO_HEAD_LEN + nEncryptedPayloadLen))
+	{
+		return m_sock->Flush();
+	}
+	return false;
+}
+
+bool LinkServer::ChatMessageSend(BYTE* pChat)
+{
+	SChatMessageSend* pChatMessageSend = (SChatMessageSend*)pChat;
+
+	char* Chatmsg = (char*)pChat + sizeof(SChatMessageSend) - 1;
+
+	BOOL isCrypt = 1;
+	int nRawPayloadLen = SGS_REQ_HEAD_LEN + sizeof(SChatMessageSend) - 1 + pChatMessageSend->msgBytes;
+	int nEncryptedPayloadLen = isCrypt ? ((nRawPayloadLen + 15) / 16) * 16 : nRawPayloadLen;
+
+	BYTE p[_MAX_MSGSIZE] = { 0 };
+	SGSProtocolHead* pSGSHeader = (SGSProtocolHead*)p;
+	pSGSHeader->isCrypt = isCrypt ? 1 : 0;
+	pSGSHeader->pktType = DATA_PACKET;
+	pSGSHeader->pduLen = nEncryptedPayloadLen;
+	pSGSHeader->hton();
+
+	SGSReqPayload* pReqPayload = (SGSReqPayload*)(p + SGS_PROTO_HEAD_LEN);
+	pReqPayload->rawDataBytes = nRawPayloadLen;
+	pReqPayload->cmdCode = CHAT_SEND_MESSAGE;
+	pReqPayload->token = GetTickCount();
+	pReqPayload->hton();
+
+	SChatMessageSend* ChatMessage = (SChatMessageSend*)((char*)pReqPayload + SGS_REQ_HEAD_LEN);
+	ChatMessage->channel = pChatMessageSend->channel;
+	ChatMessage->targetId = pChatMessageSend->targetId;
+	ChatMessage->msgBytes = pChatMessageSend->msgBytes;
+	char* msg = (char*)ChatMessage + sizeof(SChatMessageSend) - 1;
+	strcpy(msg, Chatmsg);
+	ChatMessage->hton();
+
+	if (isCrypt)
+		appEncryptDataWithKey((AES_BYTE*)(p + SGS_PROTO_HEAD_LEN), nRawPayloadLen, m_key);
+
+	if (m_sock->SendMsg(p, SGS_PROTO_HEAD_LEN + nEncryptedPayloadLen))
+	{
+		return m_sock->Flush();
+	}
+
+	return false;
+}
+

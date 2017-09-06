@@ -14,10 +14,12 @@ public:
 
 	CREATE_FUNC(MainLayout);
 
+	MainLayout();
 	~MainLayout();
 
 private:
 	Node*					layout;					//主界面层资源
+	Node*					recv;					//遮挡层资源
 
 	Button*					start_game;				//开始游戏按钮
 	Button*					btCancel;				//返回游戏按钮
@@ -34,7 +36,10 @@ private:
 	void					registerMessage();
 	void					unregisterMessage();
 
+	void					addRecvingLayer();				//添加接收界面
 	void					removeRecvingLayer();			//移除接收界面
+
+	void					FightChangeSence(float a);		//战斗切换界面回调函数
 
 	UINT16					m_currentPartitionId;					//当前要进入的分区id
 

@@ -39,7 +39,7 @@ LicenseServer::LicenseServer()
 LicenseServer::~LicenseServer()
 {
 	m_lgProcHandler.clear();
-	this->CloeseLicense();
+	this->CloseLicense();
 }
 
 bool LicenseServer::CreatSocket(const char* ip, int port)
@@ -80,6 +80,7 @@ void LicenseServer::RecvData()
 			if (pSGSHeader->pktType == ESGSPacketType::DATA_TOKEN_KEY_PACKET)
 			{
 				memcpy(m_key, pResPayload->data, DEFAULT_KEY_SIZE);
+				TcpLogic::GetInstance()->ConnectLincenseRes();
 			}
 		}
 	}
@@ -230,7 +231,7 @@ bool LicenseServer::EnterPartitionReq(SUserEnterPartitionReq*	pUserEnterPartitio
 	return false;
 }
 
-void LicenseServer::CloeseLicense()
+void LicenseServer::CloseLicense()
 {
 	RecvThreadState = false;
 	m_sock->Destroy();

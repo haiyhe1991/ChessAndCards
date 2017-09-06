@@ -17,11 +17,12 @@ bool RecvingLayer::init()
 	//auto start_game = (Sprite*)layout->getChildByName("waitServer_1");
 	//start_game->setVisible(true);
 
-	//auto antAction = CSLoader::createTimeline("animation/recving/RecvingScene.csb");
+	auto antAction = CSLoader::createTimeline("animation/recving/RecvingScene.csb");
 
-	//layout->runAction(antAction);
+	layout->runAction(antAction);
 
 	//antAction->play("aniWaitRecv", true);
+	antAction->gotoFrameAndPlay(0, 35, true);//从第0帧到60帧循环播放。还有其他重载函数，具体看源码。
 
 	return true;
 }

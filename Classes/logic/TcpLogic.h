@@ -5,13 +5,16 @@
 #include "tcp/ServiceHeader.h"
 
 
-#define TCP_DELAY_TIME			1000		//等待服务器回应延迟时间1s
+#define TCP_DELAY_TIME			1000				//等待服务器回应延迟时间1s
+#define TCP_ANSWER_TIME_OUT		10000				//等待服务器最长有效时间10s
+#define LICENSE_IP				"192.168.50.2"		//验证服务器ip
+#define LICENSE_PORT			10030				//验证服务器端口
 
-enum RecvState
+enum TcpState
 {
-	RECVING,		//洗牌阶段
-	RECVED,			//发牌阶段
-	PAUSEING,		//暂停阶段
+	IDEL,			//空闲阶段
+	REQ,			//请求阶段
+	OUT_TIME,		//超时阶段
 };
 
 class WaitTime
@@ -25,7 +28,7 @@ private:
 	bool			state;					//是否等待
 };
 
-class TcpLogic : public GameMessage, GameTick
+class TcpLogic : public GameTick
 {
 public:
 
@@ -34,11 +37,15 @@ public:
 	~TcpLogic();																		//析构
 
 	virtual void							OnTick(int time);
-	virtual void							OnMessage(const int head, void* data);
+
 
 	void						registerMessage();
 
-	bool						CreatLicenseSocket(const char* ip, int port);					//创建验证服务器连接
+	void						ChangeTcpState(TcpState tcpState);								//改变tcp状态
+
+	bool						CreatLicenseSocket();											//创建验证服务器连接
+
+	void						ConnectLincenseRes();											//创建链接验证服务器响应
 
 	const char*					getloginPlat();														//获取登录平台
 
@@ -63,6 +70,36 @@ public:
 	int							EnterPartitionRes(SGSResPayload* pBuf, int pBufLen);	//进入分区接收到的数据
 
 	bool						CreatLinkerSocket();									//创建linker服务器连接,并且断开验证服务器连接
+
+	bool						LoginLinkReq();											//登录linker请求
+
+	void						ConnectLinkRes();										//创建linker服务器连接响应
+
+	//参数：有效数据buffer，有效数据总长度
+	int							LoginLinkerRes(SGSResPayload* pBuf, int pBufLen);	//进入分区接收到的数据
+
+	bool						QueryRolesReq();										//查询角色信息请求
+
+	//参数：有效数据buffer，有效数据总长度
+	int							QueryRolesRes(SGSResPayload* pBuf, int pBufLen);		//查询角色信息响应
+
+	bool						CreateRoleReq(BYTE occuId,BYTE sex,const char* nick);	//创建角色请求
+
+	//参数：有效数据buffer，有效数据总长度
+	int							CreateRoleRes(SGSResPayload* pBuf, int pBufLen);			//创建角色响应
+
+	bool						EnterRoleReq(UINT32 roleId);							//进入角色请求
+
+	//参数：有效数据buffer，有效数据总长度
+	int							EnterRoleRes(SGSResPayload* pBuf, int pBufLen);			//进入角色响应
+
+	bool						JoinChannelReq();			//加入聊天频道请求
+
+	//参数：有效数据buffer，有效数据总长度
+	int							JoinChannelRes(SGSResPayload* pBuf, int pBufLen);			//进入角色响应
+
+	bool						ChatMessageSend(const char*	chatMsg);				//发送聊天信息
+
 private:
 
 	TcpLogic();																		//构造
@@ -72,12 +109,18 @@ private:
 	SUserLoginRes*				m_pUserLoginRes;										//登录数据信息
 	SUserQueryPartitionRes*		m_pQueryPartitionRes;									//查询分区数据信息
 	SUserEnterPartitionRes*		m_pEnterPartitionRes;									//登录分区数据信息
+	SCreateRoleRes*				m_pCreateRoleRes;										//角色创建数据信息
+	SEnterRoleRes*				m_pSEnterRoleRes;										//角色进入数据信息
 
 	list<SPartitionInfo* >		container;												//分区信息容器
 
+	list<SSkillMoveInfo* >		containerSkill;											//技能信息容器
+
+	list<SQueryRoleAttr* >		containerRoleAttr;										//角色信息
+
 	WaitTime*					wait;
 
-	RecvState					state;													//接收状态
+	TcpState					state;													//tcp状态
 
 };
 

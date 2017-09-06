@@ -18,7 +18,6 @@ list<LoadItem> LoginLayer::getResourceList()
 {
 	list<LoadItem> lst = BaseLayer::getResourceList();
 	lst.push_back(LoadItem(LoadType::UI, "ui/login/LoginScene.csb"));
-	lst.push_back(LoadItem(LoadType::ARMATURE, "animation/recving/RecvingScene.csb"));
 	return lst;
 }
 
