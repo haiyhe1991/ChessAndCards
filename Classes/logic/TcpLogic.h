@@ -88,7 +88,7 @@ public:
 	//参数：有效数据buffer，有效数据总长度
 	int							CreateRoleRes(SGSResPayload* pBuf, int pBufLen);			//创建角色响应
 
-	bool						EnterRoleReq(UINT32 roleId);							//进入角色请求
+	bool						EnterRoleReq(BYTE occuId);									//进入角色请求
 
 	//参数：有效数据buffer，有效数据总长度
 	int							EnterRoleRes(SGSResPayload* pBuf, int pBufLen);			//进入角色响应
@@ -106,6 +106,12 @@ private:
 
 	static TcpLogic*				_instance;											//单例
 
+
+	WaitTime*					wait;
+
+	TcpState					state;													//tcp状态
+
+public:
 	SUserLoginRes*				m_pUserLoginRes;										//登录数据信息
 	SUserQueryPartitionRes*		m_pQueryPartitionRes;									//查询分区数据信息
 	SUserEnterPartitionRes*		m_pEnterPartitionRes;									//登录分区数据信息
@@ -117,10 +123,6 @@ private:
 	list<SSkillMoveInfo* >		containerSkill;											//技能信息容器
 
 	list<SQueryRoleAttr* >		containerRoleAttr;										//角色信息
-
-	WaitTime*					wait;
-
-	TcpState					state;													//tcp状态
 
 };
 

@@ -1,6 +1,7 @@
 #include "AppDelegate.h"
 #include "stage/stage.h"
 #include "msg/message.h"
+#include "game_record/GameRecord.h"
 
 USING_NS_CC;
 
@@ -15,6 +16,7 @@ AppDelegate::AppDelegate() {
 
 AppDelegate::~AppDelegate() 
 {
+	GameRecord::getInstance()->SaveData();
 }
 
 //if you want a different context,just modify the value of glContextAttrs
@@ -76,6 +78,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     register_all_packages();
 
+	GameRecord::getInstance()->LoadData();
+
 	// run
 	director->runWithScene(Stage::GetInstance());
 
@@ -88,7 +92,6 @@ bool AppDelegate::applicationDidFinishLaunching() {
 // This function will be called when the app is inactive. When comes a phone call,it's be invoked too
 void AppDelegate::applicationDidEnterBackground() {
     Director::getInstance()->stopAnimation();
-
     // if you use SimpleAudioEngine, it must be pause
     // SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
 }

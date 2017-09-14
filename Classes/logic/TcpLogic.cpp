@@ -205,7 +205,6 @@ int TcpLogic::LoginUserRes(SGSResPayload* pBuf, int pBufLen)
 int TcpLogic::QueryPartitionInfoRes(SGSResPayload* pBuf, int pBufLen)
 {
 	this->ChangeTcpState(TcpState::IDEL);
-	MsgManager::GetInstance()->Dispather(MessageHead::MSG_QUERY_PARTITION_RES, &(pBuf->retCode));
 	if (pBuf->retCode == LCS_OK)
 	{
 		SUserQueryPartitionRes* pQueryPartitionRes = (SUserQueryPartitionRes*)pBuf->data;
@@ -218,6 +217,7 @@ int TcpLogic::QueryPartitionInfoRes(SGSResPayload* pBuf, int pBufLen)
 			container.push_back(pQueryPartitionRes->data + i);
 		}
 	}
+	MsgManager::GetInstance()->Dispather(MessageHead::MSG_QUERY_PARTITION_RES, &(pBuf->retCode));
 	return pBuf->retCode;
 }
 int TcpLogic::EnterPartitionRes(SGSResPayload* pBuf, int pBufLen)
@@ -340,12 +340,30 @@ int TcpLogic::CreateRoleRes(SGSResPayload* pBuf, int pBufLen)
 	return pBuf->retCode;
 }
 
-bool TcpLogic::EnterRoleReq(UINT32 roleId)
+bool TcpLogic::EnterRoleReq(BYTE occuId)
 {
 	SEnterRoleReq pSEnterRoleReq;
-	pSEnterRoleReq.roleId = roleId;
-	this->ChangeTcpState(TcpState::REQ);
-	return LinkServer::GetInstance()->EnterRoleReq(&pSEnterRoleReq);
+	list<SQueryRoleAttr*>::iterator lstIter = containerRoleAttr.begin();
+	while (lstIter != containerRoleAttr.end())
+	{
+		if (occuId == (*lstIter)->occuId)
+		{
+			pSEnterRoleReq.roleId = (*lstIter)->id;
+			this->ChangeTcpState(TcpState::REQ);
+			return LinkServer::GetInstance()->EnterRoleReq(&pSEnterRoleReq);
+		}
+		lstIter++;
+	}
+
+	if (m_pCreateRoleRes->occuId == occuId)
+	{
+		pSEnterRoleReq.roleId = m_pCreateRoleRes->id;
+		this->ChangeTcpState(TcpState::REQ);
+		return LinkServer::GetInstance()->EnterRoleReq(&pSEnterRoleReq);
+	}
+
+	return false;
+	//return LinkServer::GetInstance()->EnterRoleReq(&pSEnterRoleReq);
 }
 
 int TcpLogic::EnterRoleRes(SGSResPayload* pBuf, int pBufLen)

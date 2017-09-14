@@ -22,8 +22,10 @@ USING_NS_CC;
 #include "ui/UILoadingBar.h"
 #include "ui/UIButton.h"
 #include "ui/UITextField.h"
+#include "ui/UICheckBox.h"
 #include "ui/UIListView.h"
 #include "ui/UIText.h"
+#include "ui/UIPageView.h"
 
 
 using namespace cocos2d::ui;
@@ -35,9 +37,14 @@ using namespace cocostudio;
 #include <map>
 
 //custom
+#include "tools/ConfigFileMan.h"
 #include "tools/TickManager.h"
 #include "tools/TimeTools.h"
 #include "tools/StringTools.h"
+
+//№ЬАн
+#include "game_manage/GameManage.h"
+#include "game_record/GameRecord.h"
 
 #include "msg/message.h"
 

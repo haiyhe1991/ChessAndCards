@@ -20,6 +20,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "librecast", "..\cocos2d\ext
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "aes", "..\aes\aes.vcxproj", "{8A4CC208-91E3-449C-9BA2-4B7CF176B921}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "jsoncpp", "..\jsoncpp\jsoncpp.vcxproj", "{6A597DC9-C5E2-4946-8B78-A12E84C1A37C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -54,6 +56,10 @@ Global
 		{8A4CC208-91E3-449C-9BA2-4B7CF176B921}.Debug|Win32.Build.0 = Debug|Win32
 		{8A4CC208-91E3-449C-9BA2-4B7CF176B921}.Release|Win32.ActiveCfg = Release|Win32
 		{8A4CC208-91E3-449C-9BA2-4B7CF176B921}.Release|Win32.Build.0 = Release|Win32
+		{6A597DC9-C5E2-4946-8B78-A12E84C1A37C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{6A597DC9-C5E2-4946-8B78-A12E84C1A37C}.Debug|Win32.Build.0 = Debug|Win32
+		{6A597DC9-C5E2-4946-8B78-A12E84C1A37C}.Release|Win32.ActiveCfg = Release|Win32
+		{6A597DC9-C5E2-4946-8B78-A12E84C1A37C}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

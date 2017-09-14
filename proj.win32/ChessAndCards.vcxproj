@@ -71,7 +71,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(EngineRoot)cocos\audio\include;$(EngineRoot)external;$(EngineRoot)external\chipmunk\include\chipmunk;$(EngineRoot)extensions;..\Classes;..;%(AdditionalIncludeDirectories);$(_COCOS_HEADER_WIN32_BEGIN);$(_COCOS_HEADER_WIN32_END);..\aes\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(EngineRoot)cocos\audio\include;$(EngineRoot)external;$(EngineRoot)external\chipmunk\include\chipmunk;$(EngineRoot)extensions;..\Classes;..;%(AdditionalIncludeDirectories);$(_COCOS_HEADER_WIN32_BEGIN);$(_COCOS_HEADER_WIN32_END);..\aes\include;..\jsoncpp\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USE_MATH_DEFINES;GL_GLEXT_PROTOTYPES;CC_ENABLE_CHIPMUNK_INTEGRATION=1;COCOS2D_DEBUG=1;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -84,7 +84,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>%(AdditionalDependencies);$(_COCOS_LIB_WIN32_BEGIN);$(_COCOS_LIB_WIN32_END);.\Debug\aes.lib</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies);$(_COCOS_LIB_WIN32_BEGIN);$(_COCOS_LIB_WIN32_END);.\Debug\aes.lib;.\Debug\jsoncpp.lib</AdditionalDependencies>
       <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
       <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories);$(_COCOS_LIB_PATH_WIN32_BEGIN);$(_COCOS_LIB_PATH_WIN32_END)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -148,6 +148,10 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\csv\csv.cpp" />
     <ClCompile Include="..\Classes\csv\CsvData.cpp" />
     <ClCompile Include="..\Classes\csv\NameCsv.cpp" />
+    <ClCompile Include="..\Classes\data_encrypt\base64.cpp" />
+    <ClCompile Include="..\Classes\data_encrypt\DealWithData.cpp" />
+    <ClCompile Include="..\Classes\game_manage\GameManage.cpp" />
+    <ClCompile Include="..\Classes\game_record\GameRecord.cpp" />
     <ClCompile Include="..\Classes\layer\BaseLayer.cpp" />
     <ClCompile Include="..\Classes\layer\CardLayer.cpp" />
     <ClCompile Include="..\Classes\layer\fight\card\CardLayout.cpp" />
@@ -155,8 +159,13 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\layer\LoginLayer.cpp" />
     <ClCompile Include="..\Classes\layer\login\LoginLayout.cpp" />
     <ClCompile Include="..\Classes\layer\LogoLayer.cpp" />
+    <ClCompile Include="..\Classes\layer\RoleLayer.cpp" />
+    <ClCompile Include="..\Classes\layer\PartitionLayer.cpp" />
     <ClCompile Include="..\Classes\layer\MainLayer.cpp" />
     <ClCompile Include="..\Classes\layer\main\MainLayout.cpp" />
+    <ClCompile Include="..\Classes\layer\partition\PartitionLayout.cpp" />
+    <ClCompile Include="..\Classes\layer\role\CreateRoleLayout.cpp" />
+    <ClCompile Include="..\Classes\layer\role\RoleLayout.cpp" />
     <ClCompile Include="..\Classes\layer\shade\RecvingLayer.cpp" />
     <ClCompile Include="..\Classes\layer\shade\ShadeLayer.cpp" />
     <ClCompile Include="..\Classes\logic\CenterLogic.cpp" />
@@ -170,6 +179,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\tcp\CGameSocket.cpp" />
     <ClCompile Include="..\Classes\tcp\LicenseServer.cpp" />
     <ClCompile Include="..\Classes\tcp\LinkServer.cpp" />
+    <ClCompile Include="..\Classes\tools\ConfigFileMan.cpp" />
     <ClCompile Include="..\Classes\tools\StringTools.cpp" />
     <ClCompile Include="..\Classes\tools\TickManager.cpp" />
     <ClCompile Include="..\Classes\tools\TimeTools.cpp" />
@@ -179,6 +189,10 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\AppDelegate.h" />
     <ClInclude Include="..\Classes\chessAndCards.h" />
     <ClInclude Include="..\Classes\csv\csv.h" />
+    <ClInclude Include="..\Classes\data_encrypt\base64.h" />
+    <ClInclude Include="..\Classes\data_encrypt\DealWithData.h" />
+    <ClInclude Include="..\Classes\game_manage\GameManage.h" />
+    <ClInclude Include="..\Classes\game_record\GameRecord.h" />
     <ClInclude Include="..\Classes\layer\BaseLayer.h" />
     <ClInclude Include="..\Classes\layer\CardLayer.h" />
     <ClInclude Include="..\Classes\layer\layer_header.h" />
@@ -186,6 +200,8 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\layer\LoadingLayer.h" />
     <ClInclude Include="..\Classes\layer\LoginLayer.h" />
     <ClInclude Include="..\Classes\layer\LogoLayer.h" />
+    <ClInclude Include="..\Classes\layer\RoleLayer.h" />
+    <ClInclude Include="..\Classes\layer\PartitionLayer.h" />
     <ClInclude Include="..\Classes\layer\MainLayer.h" />
     <ClInclude Include="..\Classes\layer\shade\ShadeLayer.h" />
     <ClInclude Include="..\Classes\logic\GameLogic.h" />
@@ -205,6 +221,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\tcp\ServiceLicence.h" />
     <ClInclude Include="..\Classes\tcp\ServiceLinker.h" />
     <ClInclude Include="..\Classes\tcp\ServiceMLogic.h" />
+    <ClInclude Include="..\Classes\tools\ConfigFileMan.h" />
     <ClInclude Include="..\Classes\tools\StringTools.h" />
     <ClInclude Include="..\Classes\tools\TickManager.h" />
     <ClInclude Include="..\Classes\tools\TimeTools.h" />

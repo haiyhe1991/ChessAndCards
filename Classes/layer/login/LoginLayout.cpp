@@ -15,9 +15,22 @@ bool LoginLayout::init()
 	//添加事件监听
 	login_game->addClickEventListener(CC_CALLBACK_1(LoginLayout::onLoginHandler, this));
 
+	exit_game = (Button*)layout->getChildByName("btExit");
+	//添加事件监听
+	exit_game->addClickEventListener(CC_CALLBACK_1(LoginLayout::onExitHandler, this));
+
 	tbName = (TextField*)(layout->getChildByName("tbName"));
+	tbName->setString(GameManage::GetInstance()->GetCurUserName());
 
 	tbPassword = (TextField*)layout->getChildByName("tbPassword");
+	if (GameManage::GetInstance()->GetSavePassword())
+	{
+		tbPassword->setString(GameManage::GetInstance()->GetCurPassword());
+	}
+
+	ckbSavePassword = (CheckBox*)layout->getChildByName("ckbSavePassword");
+
+	ckbSavePassword->setSelected(GameManage::GetInstance()->GetSavePassword());
 
 	return true;
 }
@@ -100,6 +113,18 @@ void LoginLayout::onLoginHandler(Ref* sender)
 	}
 }
 
+void LoginLayout::onExitHandler(Ref* sender)
+{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT) || (CC_TARGET_PLATFORM == CC_PLATFORM_WP8)
+	CCMessageBox("You pressed the close button. Windows Store Apps do not implement a close button.", "Alert");
+#else
+	Director::getInstance()->end();
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+	exit(0);
+#endif
+#endif
+}
+
 int LoginLayout::RegistUserRes(void* pBuf)
 {
 	this->removeRecvingLayer();
@@ -133,6 +158,9 @@ int LoginLayout::LoginUserRes(void* pBuf)
 	}
 	else if (ret == LCS_OK)
 	{
+		GameManage::GetInstance()->SetSavePassword(ckbSavePassword->isSelected());
+		GameManage::GetInstance()->SetCurUserName(tbName->getString());
+		GameManage::GetInstance()->SetCurPassword(tbPassword->getString());
 		//这儿不直接写回调函数是为了切换下一帧去切换界面，否者要报错
 		this->scheduleOnce(schedule_selector(LoginLayout::LoginChangeSence), 0.1f);
 	}
@@ -150,9 +178,9 @@ int LoginLayout::LoginUserRes(void* pBuf)
 void LoginLayout::LoginChangeSence(float a)
 {
 	this->removeRecvingLayer();
-	MainLayer* mainLayer = MainLayer::create();
-	mainLayer->retain();
-	MsgManager::GetInstance()->Dispather(MessageHead::MSG_START_LOADING, mainLayer);
+	PartitionLayer* partitionLayer = PartitionLayer::create();
+	partitionLayer->retain();
+	MsgManager::GetInstance()->Dispather(MessageHead::MSG_START_LOADING, partitionLayer);
 }
 
 void LoginLayout::OnMessage(const int head, void* data)

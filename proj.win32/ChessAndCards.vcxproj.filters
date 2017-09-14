@@ -49,6 +49,21 @@
     <Filter Include="src\tools">
       <UniqueIdentifier>{5772cf90-f909-4552-bd54-19fd1d873cdf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\layer\partition">
+      <UniqueIdentifier>{292869dd-c8a6-461f-8aa3-6f4b8fbc6677}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\layer\role">
+      <UniqueIdentifier>{32a677c0-f5fa-4139-bec4-b79c0b268a9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\game_record">
+      <UniqueIdentifier>{8ef8c8ff-dc0b-4381-b1c7-b1ace25c0422}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\game_manage">
+      <UniqueIdentifier>{f7c5596e-aa96-4091-8eb3-d235abe80f2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\data_encrypt">
+      <UniqueIdentifier>{d3770392-0522-47e6-919f-7c8fce900ac3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -139,6 +154,36 @@
       <Filter>src\tools</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
+    <ClCompile Include="..\Classes\layer\PartitionLayer.cpp">
+      <Filter>src\layer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\layer\partition\PartitionLayout.cpp">
+      <Filter>src\layer\partition</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\layer\RoleLayer.cpp">
+      <Filter>src\layer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\layer\role\RoleLayout.cpp">
+      <Filter>src\layer\role</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\game_record\GameRecord.cpp">
+      <Filter>src\game_record</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\game_manage\GameManage.cpp">
+      <Filter>src\game_manage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\data_encrypt\DealWithData.cpp">
+      <Filter>src\data_encrypt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\data_encrypt\base64.cpp">
+      <Filter>src\data_encrypt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\tools\ConfigFileMan.cpp">
+      <Filter>src\tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\layer\role\CreateRoleLayout.cpp">
+      <Filter>src\layer\role</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -235,6 +280,27 @@
     </ClInclude>
     <ClInclude Include="..\Classes\tcp\ServiceCommon.h">
       <Filter>src\tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\layer\PartitionLayer.h">
+      <Filter>src\layer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\layer\RoleLayer.h">
+      <Filter>src\layer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\game_record\GameRecord.h">
+      <Filter>src\game_record</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\game_manage\GameManage.h">
+      <Filter>src\game_manage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\data_encrypt\base64.h">
+      <Filter>src\data_encrypt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\data_encrypt\DealWithData.h">
+      <Filter>src\data_encrypt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\tools\ConfigFileMan.h">
+      <Filter>src\tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

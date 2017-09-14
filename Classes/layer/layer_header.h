@@ -5,6 +5,8 @@
 #include "LoadingLayer.h"
 #include "BaseLayer.h"
 #include "LoginLayer.h"
+#include "PartitionLayer.h"
+#include "RoleLayer.h"
 #include "MainLayer.h"
 #include "shade/ShadeLayer.h"
 #include "CardLayer.h"

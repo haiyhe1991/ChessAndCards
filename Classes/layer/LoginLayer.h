@@ -23,12 +23,15 @@ private:
 
 	TextField*				tbName;					//姓名输入框
 	TextField*				tbPassword;				//密码输入框
+	CheckBox*				ckbSavePassword;		//是否保存密码
 
 	Button*					register_game;			//注册游戏按钮
 	Button*					login_game;				//开始游戏按钮
+	Button*					exit_game;				//退出游戏按钮
 
 	void					onRegHandler(Ref* sender);		//点击的处理事件
 	void					onLoginHandler(Ref* sender);	//点击的处理事件
+	void					onExitHandler(Ref* sender);		//点击的处理事件
 
 	void					registerMessage();
 	void					unregisterMessage();
