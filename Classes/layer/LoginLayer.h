@@ -33,11 +33,11 @@ private:
 	void					onLoginHandler(Ref* sender);	//点击的处理事件
 	void					onExitHandler(Ref* sender);		//点击的处理事件
 
-	void					registerMessage();
-	void					unregisterMessage();
-
 	void					addRecvingLayer();				//添加接收界面
 	void					removeRecvingLayer();			//移除接收界面
+
+	void					registerMessage();
+	void					unregisterMessage();
 
 	void					LoginChangeSence(float a);		//登陆切换界面回调函数
 
@@ -46,6 +46,10 @@ private:
 
 	//参数：服务器返回代码
 	int						LoginUserRes(void* pBuf);		//登录用户反馈结果
+
+	//参数：服务器返回代码
+	int						QueryPartitionInfoRes(void* pBuf);		//查询分区反馈结果
+
 };
 
 class LoginLayer : public BaseLayer

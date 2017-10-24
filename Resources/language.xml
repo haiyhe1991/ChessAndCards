@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<dict>
+     <key>RoleOwn</key>  
+     <string>已拥有</string>  
+	 <key>lbOccuName1</key>  
+     <string>爆炸法师</string>  
+	 	 <key>lbOccuName2</key>  
+     <string>无解刺客</string>  
+	 	 <key>lbOccuName3</key>  
+     <string>英勇战士</string>  
+</dict>

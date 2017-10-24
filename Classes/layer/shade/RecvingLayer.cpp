@@ -1,4 +1,5 @@
 #include "layer/layer_header.h"
+#include "resource/ResourceManager.h"
 
 RecvingLayer::~RecvingLayer()
 {
@@ -11,18 +12,14 @@ bool RecvingLayer::init()
 	ShadeLayer::init();
 
 
-	layout = CSLoader::createNode("animation/recving/RecvingScene.csb");
+	layout = layout = (Layout*)ResourceManager::GetInstance()->Get_ui_resource("animation/RecvingNode.csb");
 	this->addChild(layout);
 
-	//auto start_game = (Sprite*)layout->getChildByName("waitServer_1");
-	//start_game->setVisible(true);
-
-	auto antAction = CSLoader::createTimeline("animation/recving/RecvingScene.csb");
+	auto antAction = (ActionTimeline*)ResourceManager::GetInstance()->Get_ani_resource("animation/RecvingNode.csb");
 
 	layout->runAction(antAction);
 
-	//antAction->play("aniWaitRecv", true);
-	antAction->gotoFrameAndPlay(0, 35, true);//从第0帧到60帧循环播放。还有其他重载函数，具体看源码。
+	antAction->gotoFrameAndPlay(0, true);//从第0帧到60帧循环播放。还有其他重载函数，具体看源码。
 
 	return true;
 }

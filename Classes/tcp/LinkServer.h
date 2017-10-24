@@ -22,6 +22,8 @@ public:
 
 	void									CloseLink();							//关闭socket
 
+	bool									CheckSocket();							//检查链接状态
+
 	bool									LoginLinkerReq(SLoginLinkerReq* pLoginLinkerReq);//请求登录linker
 
 	bool									QueryRolesReq(SQueryRolesReq* req);			//查询角色

@@ -35,7 +35,7 @@ public:
 	bool    SendMsg(void* pBuf, int nSize);  
 	bool    ReceiveMsg(void* pBuf, int& nSize);  
 	bool    Flush(void);  
-	bool    Check(void);  
+	bool    Check(void);					//¼ì²éÁ¬½Ó×´Ì¬ 
 	void    Destroy(void);  
 	SOCKET  GetSocket(void) const { return m_sockClient; }  
 private:  

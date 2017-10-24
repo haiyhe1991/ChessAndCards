@@ -40,16 +40,18 @@ private:
 	void					addRecvingLayer();				//添加接收界面
 	void					removeRecvingLayer();			//移除接收界面
 
-	void					SenceLoad(float a);				//场景加载回调函数
+	void					SenceLoad();					//场景加载回调函数
 	void					FightChangeSence(float a);		//战斗切换界面回调函数
 
 	UINT16					m_currentPartitionId;					//当前要进入的分区id
 
 	//参数：服务器返回代码
-	int						QueryPartitionInfoRes(void* pBuf);		//查询分区反馈结果
+	int						EnterPartitionRes(void* pBuf);		//进入分区反馈结果
 
 	//参数：服务器返回代码
-	int						EnterPartitionRes(void* pBuf);		//进入分区反馈结果
+	int						LoginLinkRes(void* pBuf);		//登陆link反馈结果
+
+	int						QueryRoleRes(void* pBuf);		//查询角色反馈结果
 
 };
 

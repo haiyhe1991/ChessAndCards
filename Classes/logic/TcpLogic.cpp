@@ -21,7 +21,7 @@ void TcpLogic::DestoryInstance()
 
 TcpLogic::TcpLogic()
 {
-	wait = new WaitTime;
+	wait = new WaitTime2;
 	m_pUserLoginRes = new SUserLoginRes();
 	m_pQueryPartitionRes = new SUserQueryPartitionRes();
 	m_pEnterPartitionRes = new SUserEnterPartitionRes();
@@ -211,10 +211,12 @@ int TcpLogic::QueryPartitionInfoRes(SGSResPayload* pBuf, int pBufLen)
 		pQueryPartitionRes->ntoh();
 		m_pQueryPartitionRes->num = pQueryPartitionRes->num;
 		m_pQueryPartitionRes->totals = pQueryPartitionRes->totals;
-
 		for (int i = 0; i < pQueryPartitionRes->num; ++i)
 		{
-			container.push_back(pQueryPartitionRes->data + i);
+			SPartitionInfo* pPartitionInfo = new SPartitionInfo();
+			*pPartitionInfo = *(pQueryPartitionRes->data + i);
+			//pPartitionInfo->ntoh();
+			container.push_back(pPartitionInfo);
 		}
 	}
 	MsgManager::GetInstance()->Dispather(MessageHead::MSG_QUERY_PARTITION_RES, &(pBuf->retCode));
@@ -257,7 +259,7 @@ bool TcpLogic::LoginLinkReq()
 void TcpLogic::ConnectLinkRes()
 {
 	this->ChangeTcpState(TcpState::IDEL);
-	MsgManager::GetInstance()->Dispather(MessageHead::MSG_CONNECT_LINK_RES, nullptr);
+	this->LoginLinkReq();//链接成功就登陆
 }
 
 int TcpLogic::LoginLinkerRes(SGSResPayload* pBuf, int pBufLen)
@@ -280,10 +282,12 @@ int TcpLogic::QueryRolesRes(SGSResPayload* pBuf, int pBufLen)
 	if (pBuf->retCode == LCS_OK)
 	{
 		SQueryRolesRes* pQueryRolesRes = (SQueryRolesRes*)pBuf->data;
-		pQueryRolesRes->roles->ntoh();
 		for (int i = 0; i < pQueryRolesRes->rolesCount; ++i)
 		{
-			containerRoleAttr.push_back(pQueryRolesRes->roles + i);
+			SQueryRoleAttr* pQueryRoleAttr = new SQueryRoleAttr();
+			*pQueryRoleAttr = *(pQueryRolesRes->roles + i);
+			pQueryRoleAttr->ntoh();
+			containerRoleAttr.push_back(pQueryRoleAttr);
 		}
 	}
 	MsgManager::GetInstance()->Dispather(MessageHead::MSG_QUERY_ROLE_RES, &(pBuf->retCode));
@@ -401,7 +405,10 @@ int TcpLogic::EnterRoleRes(SGSResPayload* pBuf, int pBufLen)
 		m_pSEnterRoleRes->skillNum = pEnterRoleRes->skillNum;
 		for (int i = 0; i < pEnterRoleRes->skillNum; ++i)
 		{
-			containerSkill.push_back(pEnterRoleRes->data + i);
+			SSkillMoveInfo* pSkillMoveInfo = new SSkillMoveInfo();
+			*pSkillMoveInfo = *(pEnterRoleRes->data + i);
+			pSkillMoveInfo->ntoh();
+			containerSkill.push_back(pSkillMoveInfo);
 		}
 	}
 

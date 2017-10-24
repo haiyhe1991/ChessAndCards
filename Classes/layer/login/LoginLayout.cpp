@@ -32,6 +32,7 @@ bool LoginLayout::init()
 
 	ckbSavePassword->setSelected(GameManage::GetInstance()->GetSavePassword());
 
+
 	return true;
 }
 
@@ -57,6 +58,7 @@ void LoginLayout::registerMessage()
 	manager->Reg(MSG_REGIST_RES, this);
 	manager->Reg(MSG_LOGIN_RES, this);
 	manager->Reg(MSG_CONNECT_LICENSE_RES, this);
+	manager->Reg(MSG_QUERY_PARTITION_RES, this);
 }
 
 void LoginLayout::unregisterMessage()
@@ -66,6 +68,7 @@ void LoginLayout::unregisterMessage()
 	manager->Unreg(MSG_REGIST_RES, this);
 	manager->Unreg(MSG_LOGIN_RES, this);
 	manager->Unreg(MSG_CONNECT_LICENSE_RES, this);
+	manager->Unreg(MSG_QUERY_PARTITION_RES, this);
 }
 
 void LoginLayout::removeRecvingLayer()
@@ -161,8 +164,9 @@ int LoginLayout::LoginUserRes(void* pBuf)
 		GameManage::GetInstance()->SetSavePassword(ckbSavePassword->isSelected());
 		GameManage::GetInstance()->SetCurUserName(tbName->getString());
 		GameManage::GetInstance()->SetCurPassword(tbPassword->getString());
-		//这儿不直接写回调函数是为了切换下一帧去切换界面，否者要报错
-		this->scheduleOnce(schedule_selector(LoginLayout::LoginChangeSence), 0.1f);
+
+		//查询分区
+		TcpLogic::GetInstance()->QueryPartitionInfoReq(0, INT16_MAX);
 	}
 	else
 	{
@@ -174,6 +178,27 @@ int LoginLayout::LoginUserRes(void* pBuf)
 	
 	return ret;
 }
+
+
+int LoginLayout::QueryPartitionInfoRes(void* pBuf)
+{
+	//this->removeRecvingLayer();
+
+	UINT16 ret = *(UINT16*)pBuf;
+	if (ret != LCS_OK)
+	{
+		char str[48];
+		sprintf(str, "查询分区错误,错误码：%d", ret);
+		MessageBox(str, "提示");
+	}
+	else
+	{
+		//这儿不直接写回调函数是为了切换下一帧去切换界面，否者要报错
+		this->scheduleOnce(schedule_selector(LoginLayout::LoginChangeSence), 0.1f);
+	}
+	return ret;
+}
+
 
 void LoginLayout::LoginChangeSence(float a)
 {
@@ -199,6 +224,9 @@ void LoginLayout::OnMessage(const int head, void* data)
 		break;
 	case MSG_CONNECT_LICENSE_RES:
 		//this->removeRecvingLayer();
+		break;
+	case MSG_QUERY_PARTITION_RES:
+		this->QueryPartitionInfoRes(data);
 		break;
 	default:
 		break;

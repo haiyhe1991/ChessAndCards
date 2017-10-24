@@ -24,15 +24,7 @@ bool PartitionLayout::init()
 
 	lstPartition = (ListView*)layout->getChildByName("lstPartition");
 
-	//btMahjong = (Button*)layout->getChildByName("btMahjong");
-	////添加事件监听
-	//btMahjong->addClickEventListener(CC_CALLBACK_1(PartitionLayout::onMahjongHandler, this));
-
-	//btChess = (Button*)layout->getChildByName("btChess");
-	////添加事件监听
-	//btChess->addClickEventListener(CC_CALLBACK_1(PartitionLayout::onChessHandler, this));
-
-	TcpLogic::GetInstance()->QueryPartitionInfoReq(0, INT16_MAX);
+	this->SenceLoad();
 
 	return true;
 }
@@ -58,16 +50,18 @@ void PartitionLayout::registerMessage()
 {
 	MsgManager* manager = MsgManager::GetInstance();
 	manager->Reg(MSG_REQ_OUT_TIME, this);
-	manager->Reg(MSG_QUERY_PARTITION_RES, this);
 	manager->Reg(MSG_ENTER_PARTITION_RES, this);
+	manager->Reg(MSG_LOGIN_LINK_RES, this);
+	manager->Reg(MSG_QUERY_ROLE_RES, this);
 }
 
 void PartitionLayout::unregisterMessage()
 {
 	MsgManager* manager = MsgManager::GetInstance();
 	manager->Unreg(MSG_REQ_OUT_TIME, this);
-	manager->Unreg(MSG_QUERY_PARTITION_RES, this);
 	manager->Unreg(MSG_ENTER_PARTITION_RES, this);
+	manager->Unreg(MSG_LOGIN_LINK_RES, this);
+	manager->Unreg(MSG_QUERY_ROLE_RES, this);
 }
 
 void PartitionLayout::removeRecvingLayer()
@@ -108,25 +102,6 @@ void PartitionLayout::onPartionHandler(Ref* sender)
 	txtSelectPartition->setString(button->getTitleText());
 }
 
-int PartitionLayout::QueryPartitionInfoRes(void* pBuf)
-{
-	//this->removeRecvingLayer();
-
-	UINT16 ret = *(UINT16*)pBuf;
-	if (ret != LCS_OK)
-	{
-		char str[48];
-		sprintf(str, "查询分区错误,错误码：%d", ret);
-		MessageBox(str, "提示");
-	}
-	else
-	{
-		//这儿不直接写回调函数是为了切换下一帧去切换界面，否者要报错
-		this->scheduleOnce(schedule_selector(PartitionLayout::SenceLoad), 0.1f);
-	}
-	return ret;
-}
-
 int PartitionLayout::EnterPartitionRes(void* pBuf)
 {
 	UINT16 ret = *(UINT16*)pBuf;
@@ -139,14 +114,49 @@ int PartitionLayout::EnterPartitionRes(void* pBuf)
 	}
 	else
 	{
-		//这儿不直接写回调函数是为了切换下一帧去切换界面，否者要报错
-		this->scheduleOnce(schedule_selector(PartitionLayout::FightChangeSence), 0.1f);
+		TcpLogic::GetInstance()->CreatLinkerSocket();
 	}
 
 	return ret;
 }
 
-void PartitionLayout::SenceLoad(float a)
+int PartitionLayout::LoginLinkRes(void* pBuf)
+{
+	//this->removeRecvingLayer();
+	UINT16 ret = *(UINT16*)pBuf;
+	if (ret != LCS_OK)
+	{
+		this->removeRecvingLayer();
+		char str[48];
+		sprintf(str, "登陆link错误,错误码：%d", ret);
+		MessageBox(str, "提示");
+	}
+	else//先默认选择进入一个角色
+	{
+		TcpLogic::GetInstance()->QueryRolesReq();
+	}
+
+	return ret;
+}
+
+int PartitionLayout::QueryRoleRes(void* pBuf)
+{
+	UINT16 ret = *(UINT16*)pBuf;
+	if (ret != LCS_OK)
+	{
+		this->removeRecvingLayer();
+		char str[48];
+		sprintf(str, "查询角色错误,错误码：%d", ret);
+		MessageBox(str, "提示");
+	}
+	{
+		//这儿不直接写回调函数是为了切换下一帧去切换界面，否者要报错
+		this->scheduleOnce(schedule_selector(PartitionLayout::FightChangeSence), 0.1f);
+	}
+	return ret;
+}
+
+void PartitionLayout::SenceLoad()
 {
 	list<SPartitionInfo*>::iterator lstIter = TcpLogic::GetInstance()->container.begin();
 	string curPartitionName = "";
@@ -181,11 +191,14 @@ void PartitionLayout::OnMessage(const int head, void* data)
 		this->removeRecvingLayer();
 		MessageBox("连接超时", "提示");
 		break;
-	case MSG_QUERY_PARTITION_RES:
-		QueryPartitionInfoRes(data);
-		break;
 	case MSG_ENTER_PARTITION_RES:
 		EnterPartitionRes(data);
+		break;
+	case MSG_LOGIN_LINK_RES:
+		this->LoginLinkRes(data);
+		break;
+	case MSG_QUERY_ROLE_RES:
+		this->QueryRoleRes(data);
 		break;
 	default:
 		break;

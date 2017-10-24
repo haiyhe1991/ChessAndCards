@@ -17,10 +17,10 @@ enum TcpState
 	OUT_TIME,		//超时阶段
 };
 
-class WaitTime
+class WaitTime2
 {
 public:
-	WaitTime();
+	WaitTime2();
 	void			StartWait(int time);	//开始等待  时间毫秒   如果时间为0，那么到下一次心跳的时候，将执行后面的代码
 	bool			OnTime(int time);		//记录时间			true 时间已到
 private:
@@ -107,7 +107,7 @@ private:
 	static TcpLogic*				_instance;											//单例
 
 
-	WaitTime*					wait;
+	WaitTime2*					wait;
 
 	TcpState					state;													//tcp状态
 

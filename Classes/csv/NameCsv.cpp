@@ -39,9 +39,9 @@ bool NameCsv::hasCache(int id)
 	{
 		if (*iter == id)
 		{
-			return false;
+			return true;
 		}
 		iter++;
 	}
-	return true;
+	return false;
 }

@@ -365,17 +365,25 @@ bool CGameSocket::Check(void)
 	//取第一个字节出来检查
 	char buf[1];  
 	int ret = recv(m_sockClient, buf, 1, MSG_PEEK);  
-	if(ret == 0) {  
+	if(ret == 0) 
+	{  
 		Destroy();  
 		return false;  
-	} else if(ret < 0) {  
-		if (hasError()) {  
+	} 
+	else if(ret < 0) 
+	{  
+		if (hasError()) 
+		{  
 			Destroy();  
 			return false;  
-		} else {    // 阻塞  
+		} 
+		else 
+		{    // 阻塞  
 			return true;  
 		}  
-	} else {    // 有数据  
+	} 
+	else 
+	{    // 有数据  
 		return true;  
 	}  
 

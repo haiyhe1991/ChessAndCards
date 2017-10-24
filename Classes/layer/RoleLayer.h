@@ -79,16 +79,11 @@ private:
 
 	void					addRecvingLayer();				//添加接收界面
 	void					removeRecvingLayer();			//移除接收界面
-	void					SenceLoad(float a);				//场景加载回调函数
+
+	void					SenceLoad();					//场景加载回调函数
 	void					PageCurIndexChange();			//页面变化改变左右button可用状态
 
 	void					FightChangeSence(float a);		//战斗切换界面回调函数
-
-	void					ConnectLinkRes();				//创建link连接反馈结果
-	//参数：服务器返回代码
-	int						LoginLinkRes(void* pBuf);		//登陆link反馈结果
-
-	int						QueryRoleRes(void* pBuf);		//查询角色反馈结果
 
 	int						EnterRoleRes(void* pBuf);		//进入角色反馈结果
 

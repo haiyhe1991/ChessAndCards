@@ -1,4 +1,4 @@
-#include "TcpLogic.h"
+#include "GameLogic.h"
 
 WaitTime::WaitTime()
 {

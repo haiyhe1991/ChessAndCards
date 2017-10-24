@@ -28,6 +28,8 @@ void LinkServer::RecoverInstance()
 
 LinkServer::LinkServer()
 {
+	threadRecv = nullptr;
+	m_sock = nullptr;
 	memset(m_key, 0, sizeof(m_key));
 	strcpy(m_key, DEFAULT_TOKEN_KEY);
 	ADD_LINK_PROC_HANDLER(LINKER_LOGIN, LoginLinkerRes);
@@ -44,22 +46,51 @@ LinkServer::~LinkServer()
 
 bool LinkServer::CreatSocket(DWORD dwIP, int port)
 {
-	m_sock = new CGameSocket();
-	char szBuf[16];
-	if (m_sock->Create(GetStringIP(szBuf,dwIP), port))
+	if (m_sock == nullptr)
+	{
+		m_sock = new CGameSocket();
+	}
+	char szBuf[16] = {};
+	if (this->CheckSocket())
+	{
+		return true;
+	}
+	if (m_sock->Create(GetStringIP(szBuf, dwIP), port))
 	{
 		RecvThreadState = true;
-		threadRecv = new thread(&LinkServer::RecvData, this);
-		threadRecv->detach();
+		if (threadRecv==nullptr)
+		{
+			threadRecv = new thread(&LinkServer::RecvData, this);
+			threadRecv->detach();
+		}
 		return true;
 	}
 	return false;
 }
 
+bool LinkServer::CheckSocket()
+{
+	if (m_sock == nullptr) return false;
+	return m_sock->Check();
+}
+
 void LinkServer::CloseLink()
 {
 	RecvThreadState = false;
-	m_sock->Destroy();
+	if (threadRecv != nullptr)
+	{
+		delete threadRecv;
+		threadRecv = nullptr;
+	}
+	if (m_sock != nullptr)
+	{
+		if (m_sock->Check())
+		{
+			m_sock->Destroy();
+			delete m_sock;
+			m_sock = nullptr;
+		}
+	}
 }
 
 // DWORD ip ×ª»¯Îª ×Ö·û´®ip
@@ -107,6 +138,8 @@ void LinkServer::RecvData()
 
 bool LinkServer::LoginLinkerReq(SLoginLinkerReq* pLoginLinkerReq)
 {
+	if (!this->CheckSocket()) return false;
+
 	BOOL isCrypt = 1;
 	int nRawPayloadLen = SGS_REQ_HEAD_LEN + sizeof(SLoginLinkerReq);
 	int nEncryptedPayloadLen = isCrypt ? ((nRawPayloadLen + 15) / 16) * 16 : nRawPayloadLen;
@@ -141,6 +174,8 @@ bool LinkServer::LoginLinkerReq(SLoginLinkerReq* pLoginLinkerReq)
 
 bool LinkServer::QueryRolesReq(SQueryRolesReq* req)
 {
+	if (!this->CheckSocket()) return false;
+
 	BOOL isCrypt = 1;
 	int nRawPayloadLen = SGS_REQ_HEAD_LEN + sizeof(SQueryRolesReq);
 	int nEncryptedPayloadLen = isCrypt ? ((nRawPayloadLen + 15) / 16) * 16 : nRawPayloadLen;
@@ -174,6 +209,8 @@ bool LinkServer::QueryRolesReq(SQueryRolesReq* req)
 
 bool LinkServer::CreateRoleReq(SCreateRoleReq* req)
 {
+	if (!this->CheckSocket()) return false;
+
 	BOOL isCrypt = 1;
 	int nRawPayloadLen = SGS_REQ_HEAD_LEN + sizeof(SCreateRoleReq);
 	int nEncryptedPayloadLen = isCrypt ? ((nRawPayloadLen + 15) / 16) * 16 : nRawPayloadLen;
@@ -208,6 +245,8 @@ bool LinkServer::CreateRoleReq(SCreateRoleReq* req)
 
 bool LinkServer::EnterRoleReq(SEnterRoleReq * pEnterRoleReq)
 {
+	if (!this->CheckSocket()) return false;
+
 	BOOL isCrypt = 1;
 	int nRawPayloadLen = SGS_REQ_HEAD_LEN + sizeof(SEnterRoleReq);
 	int nEncryptedPayloadLen = isCrypt ? ((nRawPayloadLen + 15) / 16) * 16 : nRawPayloadLen;
@@ -241,6 +280,8 @@ bool LinkServer::EnterRoleReq(SEnterRoleReq * pEnterRoleReq)
 
 bool LinkServer::JoinChannelReq(SJoinChannelReq* req)
 {
+	if (!this->CheckSocket()) return false;
+
 	BOOL isCrypt = 1;
 	int nRawPayloadLen = SGS_REQ_HEAD_LEN + sizeof(SJoinChannelReq);
 	int nEncryptedPayloadLen = isCrypt ? ((nRawPayloadLen + 15) / 16) * 16 : nRawPayloadLen;
@@ -276,6 +317,8 @@ bool LinkServer::JoinChannelReq(SJoinChannelReq* req)
 
 bool LinkServer::ChatMessageSend(BYTE* pChat)
 {
+	if (!this->CheckSocket()) return false;
+
 	SChatMessageSend* pChatMessageSend = (SChatMessageSend*)pChat;
 
 	char* Chatmsg = (char*)pChat + sizeof(SChatMessageSend) - 1;

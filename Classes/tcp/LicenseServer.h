@@ -16,7 +16,9 @@ public:
 	static LicenseServer*					GetInstance();												//单例模式
 	static void								RecoverInstance();											//销毁单例
 
-	bool									CreatSocket(const char* ip, int port);						//创建socket连接
+	bool									CreatSocket(const char* ip, int port);	
+
+	bool									CheckSocket();							//检查链接状态
 
 	void									RecvData();													//接收数据线程回调
 

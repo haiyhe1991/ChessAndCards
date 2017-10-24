@@ -8,12 +8,18 @@
 
 #define WASH_COUNT				3
 
+enum PokerCount
+{
+	COUNT_1 = 1,
+	COUNT_2 = 2,
+};
+
 enum PokerColor
 {
 	SPADES = 1,
-	HEARTS,
-	CLUBS,			//梅花
-	DIAMONDS
+	HEARTS = 2,
+	CLUBS = 3,			//梅花
+	DIAMONDS = 4
 };
 
 enum PokerPoint
@@ -35,8 +41,10 @@ enum PokerPoint
 
 struct Poker
 {
+	PokerCount		count;			//第几幅扑克牌
 	PokerColor		color;
 	PokerPoint		point;
+	bool			particularity;	//特殊性
 	int				score;			//扑克牌对应的分数
 };
 
@@ -46,6 +54,7 @@ enum ActionState
 	GET,			//摸一张牌
 	PASS,			//过牌  禁手
 	HIT_CHANGE,		//特殊牌  改变花色
+	CHOOSE_COLOR,	//选择花色
 };
 
 struct ActionChess
@@ -89,6 +98,7 @@ public:
 	void					WashChess();						//洗牌函数
 	Poker					GetPoker();							//取得一张扑克牌
 	void					RecyclePoker(Poker poker);			//回收扑克
+	int						GetDistributeCount();				//派发牌堆剩余牌数
 
 private:
 	void					initPoker();						//初始化扑克牌
@@ -107,20 +117,33 @@ private:
 class PlayerLogic
 {
 public:
-	PlayerLogic(bool robot);
+	PlayerLogic(bool robot,int id);
 
 	void					Reset();							//重置玩家状态
 	bool					IsLose();							//是否已经输掉了比赛
 	void					AddChess(Poker poker);
 	void					DelChess(Poker poker);				//删除一张手牌
 	bool					IsRobot();
+	int						RemainCount();						//剩余手牌数量
+	void					removeHandChess();					//清空手牌
 
 	void					Execute(Poker poker);				//机器人的AI执行
 	bool					CheckHandChess(Poker poker);		//检查手牌
+	bool					CheckHitValid(Poker oldPoker, Poker hitPoker);//检查出牌是否有效
+
+	bool					IsReady();							//是否准备完毕
+	void					SetReadyState(bool ready);			//设置准备完毕状态
+	int						GetId();							//获取id
+	string					GetName();							//获取名字
+	int						GetCurScore();						//获取当前得分
+	int						GetAllScore();						//获取总得分
+	void					AddScore();							//增加分数							
 
 protected:
 
 	bool					robot;			//是否是机器人
+	bool					ready;			//是否准备完毕
+	int						id;
 	int						score;			//分数
 	NameCsvItem*			nameItem;		//玩家名字
 
@@ -134,7 +157,8 @@ class CenterLogic : public GameMessage, GameTick
 {
 public:
 	CenterLogic();
-	~CenterLogic();
+
+	~CenterLogic();																		//析构
 
 	virtual void							OnTick(int time);
 	virtual void							OnMessage(const int head, void* data);
@@ -144,6 +168,7 @@ public:
 	void									HitChess(Poker poker);					//打出一张牌
 
 private:
+
 	GameState								game_state;								//当前游戏的进行状态
 	bool									direction;								//当前的方向顺序		true 正向  false 逆向
 
@@ -156,8 +181,10 @@ private:
 	WaitTime*								wait;
 	ChessLogic*								chess_logic;							//牌逻辑
 
-private:
+private:																	//构造
+
 	void									registerMessage();
+	void									unregisterMessage();
 
 	void									initChess();							//初始化牌
 	void									initPlayer();							//初始化玩家和机器人
@@ -167,6 +194,8 @@ private:
 
 	void									processAction(ActionChess action);		//处理行动
 	void									punish();								//惩罚函数
+
+	void									calculateAction();						//结算行动
 };
 
 #endif

@@ -18,6 +18,8 @@ list<LoadItem> PartitionLayer::getResourceList()
 {
 	list<LoadItem> lst = BaseLayer::getResourceList();
 	lst.push_back(LoadItem(LoadType::UI, "ui/partition/partition.csb"));
+	lst.push_back(LoadItem(LoadType::UI, "animation/RecvingNode.csb"));
+	lst.push_back(LoadItem(LoadType::ANIMATION, "animation/RecvingNode.csb"));
 	return lst;
 }
 

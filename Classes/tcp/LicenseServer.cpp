@@ -28,6 +28,8 @@ void LicenseServer::RecoverInstance()
 
 LicenseServer::LicenseServer()
 {
+	threadRecv = nullptr;
+	m_sock = nullptr;
 	memset(m_key, 0, sizeof(m_key));
 	strcpy(m_key, DEFAULT_TOKEN_KEY);
 	ADD_LC_PROC_HANDLER(LICENCE_USER_REGIST, RegistUserRes);
@@ -44,15 +46,32 @@ LicenseServer::~LicenseServer()
 
 bool LicenseServer::CreatSocket(const char* ip, int port)
 {
-	m_sock = new CGameSocket();
+	if (m_sock == nullptr)
+	{
+		m_sock = new CGameSocket();
+	}
+	char szBuf[16] = {};
+	if (this->CheckSocket())
+	{
+		return true;
+	}
 	if (m_sock->Create(ip, port))
 	{
 		RecvThreadState = true;
-		threadRecv = new thread(&LicenseServer::RecvData, this);
-		threadRecv->detach();
+		if (threadRecv == nullptr)
+		{
+			threadRecv = new thread(&LicenseServer::RecvData, this);
+			threadRecv->detach();
+		}
 		return true;
 	}
 	return false;
+}
+
+bool LicenseServer::CheckSocket()
+{
+	if (m_sock == nullptr) return false;
+	return m_sock->Check();
 }
 
 void LicenseServer::RecvData()
@@ -88,6 +107,8 @@ void LicenseServer::RecvData()
 
 bool LicenseServer::RegistUserReq(SUserRegistReq*	pUserRegistReq)
 {
+	if (!this->CheckSocket()) return false;
+
 	BOOL isCrypt = 1;
 	int nRawPayloadLen = SGS_REQ_HEAD_LEN + sizeof(SUserRegistReq);
 	int nEncryptedPayloadLen = isCrypt ? ((nRawPayloadLen + 15) / 16) * 16 : nRawPayloadLen;
@@ -126,6 +147,8 @@ bool LicenseServer::RegistUserReq(SUserRegistReq*	pUserRegistReq)
 
 bool LicenseServer::LoginUserReq(SUserPswLoginReq* pUserPswLoginReq)
 {
+	if (!this->CheckSocket()) return false;
+
 	BOOL isCrypt = 1;
 	int nRawPayloadLen = SGS_REQ_HEAD_LEN + sizeof(SUserPswLoginReq);
 	int nEncryptedPayloadLen = isCrypt ? ((nRawPayloadLen + 15) / 16) * 16 : nRawPayloadLen;
@@ -165,6 +188,8 @@ bool LicenseServer::LoginUserReq(SUserPswLoginReq* pUserPswLoginReq)
 
 bool LicenseServer::QueryPartitionInfoReq(SUserQueryPartitionReq*	pUserQueryPartitionReq)
 {
+	if (!this->CheckSocket()) return false;
+
 	BOOL isCrypt = 1;
 	int nRawPayloadLen = SGS_REQ_HEAD_LEN + sizeof(SUserQueryPartitionReq);
 	int nEncryptedPayloadLen = isCrypt ? ((nRawPayloadLen + 15) / 16) * 16 : nRawPayloadLen;
@@ -199,6 +224,8 @@ bool LicenseServer::QueryPartitionInfoReq(SUserQueryPartitionReq*	pUserQueryPart
 
 bool LicenseServer::EnterPartitionReq(SUserEnterPartitionReq*	pUserEnterPartitionReq)
 {
+	if (!this->CheckSocket()) return false;
+
 	BOOL isCrypt = 1;
 	int nRawPayloadLen = SGS_REQ_HEAD_LEN + sizeof(SUserEnterPartitionReq);
 	int nEncryptedPayloadLen = isCrypt ? ((nRawPayloadLen + 15) / 16) * 16 : nRawPayloadLen;
@@ -234,5 +261,18 @@ bool LicenseServer::EnterPartitionReq(SUserEnterPartitionReq*	pUserEnterPartitio
 void LicenseServer::CloseLicense()
 {
 	RecvThreadState = false;
-	m_sock->Destroy();
+	if (threadRecv != nullptr)
+	{
+		delete threadRecv;
+		threadRecv = nullptr;
+	}
+	if (m_sock != nullptr)
+	{
+		if (m_sock->Check())
+		{
+			m_sock->Destroy();
+			delete m_sock;
+			m_sock = nullptr;
+		}
+	}
 }

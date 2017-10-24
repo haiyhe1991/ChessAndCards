@@ -144,6 +144,8 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Classes\ai\BaseAI.cpp" />
+    <ClCompile Include="..\Classes\ai\GameAI.cpp" />
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
     <ClCompile Include="..\Classes\csv\csv.cpp" />
     <ClCompile Include="..\Classes\csv\CsvData.cpp" />
@@ -154,15 +156,18 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\game_record\GameRecord.cpp" />
     <ClCompile Include="..\Classes\layer\BaseLayer.cpp" />
     <ClCompile Include="..\Classes\layer\CardLayer.cpp" />
+    <ClCompile Include="..\Classes\layer\fight\card\CalculateLayout.cpp" />
     <ClCompile Include="..\Classes\layer\fight\card\CardLayout.cpp" />
+    <ClCompile Include="..\Classes\layer\fight\card\GameCard.cpp" />
+    <ClCompile Include="..\Classes\layer\fight\card\GameMenuLayout.cpp" />
+    <ClCompile Include="..\Classes\layer\fight\card\GameOverLayout.cpp" />
+    <ClCompile Include="..\Classes\layer\fight\card\GameRuleLayout.cpp" />
     <ClCompile Include="..\Classes\layer\LoadingLayer.cpp" />
     <ClCompile Include="..\Classes\layer\LoginLayer.cpp" />
     <ClCompile Include="..\Classes\layer\login\LoginLayout.cpp" />
     <ClCompile Include="..\Classes\layer\LogoLayer.cpp" />
     <ClCompile Include="..\Classes\layer\RoleLayer.cpp" />
     <ClCompile Include="..\Classes\layer\PartitionLayer.cpp" />
-    <ClCompile Include="..\Classes\layer\MainLayer.cpp" />
-    <ClCompile Include="..\Classes\layer\main\MainLayout.cpp" />
     <ClCompile Include="..\Classes\layer\partition\PartitionLayout.cpp" />
     <ClCompile Include="..\Classes\layer\role\CreateRoleLayout.cpp" />
     <ClCompile Include="..\Classes\layer\role\RoleLayout.cpp" />
@@ -173,8 +178,10 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\logic\PlayerLogic.cpp" />
     <ClCompile Include="..\Classes\logic\TcpLogic.cpp" />
     <ClCompile Include="..\Classes\logic\WaitTime.cpp" />
+    <ClCompile Include="..\Classes\logic\WaitTime2.cpp" />
     <ClCompile Include="..\Classes\msg\message.cpp" />
     <ClCompile Include="..\Classes\resource\ResourceManager.cpp" />
+    <ClCompile Include="..\Classes\spriteButton\SpriteButton.cpp" />
     <ClCompile Include="..\Classes\stage\stage.cpp" />
     <ClCompile Include="..\Classes\tcp\CGameSocket.cpp" />
     <ClCompile Include="..\Classes\tcp\LicenseServer.cpp" />
@@ -186,6 +193,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Classes\ai\ai.h" />
     <ClInclude Include="..\Classes\AppDelegate.h" />
     <ClInclude Include="..\Classes\chessAndCards.h" />
     <ClInclude Include="..\Classes\csv\csv.h" />
@@ -195,6 +203,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\game_record\GameRecord.h" />
     <ClInclude Include="..\Classes\layer\BaseLayer.h" />
     <ClInclude Include="..\Classes\layer\CardLayer.h" />
+    <ClInclude Include="..\Classes\layer\fight\card\GameCard.h" />
     <ClInclude Include="..\Classes\layer\layer_header.h" />
     <ClInclude Include="..\Classes\layer\load.h" />
     <ClInclude Include="..\Classes\layer\LoadingLayer.h" />
@@ -202,12 +211,13 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\layer\LogoLayer.h" />
     <ClInclude Include="..\Classes\layer\RoleLayer.h" />
     <ClInclude Include="..\Classes\layer\PartitionLayer.h" />
-    <ClInclude Include="..\Classes\layer\MainLayer.h" />
     <ClInclude Include="..\Classes\layer\shade\ShadeLayer.h" />
     <ClInclude Include="..\Classes\logic\GameLogic.h" />
     <ClInclude Include="..\Classes\logic\TcpLogic.h" />
     <ClInclude Include="..\Classes\msg\message.h" />
+    <ClInclude Include="..\Classes\msg\msgFight.h" />
     <ClInclude Include="..\Classes\resource\ResourceManager.h" />
+    <ClInclude Include="..\Classes\spriteButton\SpriteButton.h" />
     <ClInclude Include="..\Classes\stage\stage.h" />
     <ClInclude Include="..\Classes\tcp\CGameSocket.h" />
     <ClInclude Include="..\Classes\tcp\LicenseServer.h" />

@@ -25,12 +25,6 @@
     <Filter Include="src\layer\login">
       <UniqueIdentifier>{622e1253-8803-4519-8510-8ed4ddf634bf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\layer\main">
-      <UniqueIdentifier>{1488218a-3b2c-456e-afcb-b2f4d71c6362}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\layer\shade">
-      <UniqueIdentifier>{46ae5713-d027-456e-a379-f2727d911040}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\logic">
       <UniqueIdentifier>{badbb778-24ee-41fc-8023-ee6348b09355}</UniqueIdentifier>
     </Filter>
@@ -64,6 +58,15 @@
     <Filter Include="src\data_encrypt">
       <UniqueIdentifier>{d3770392-0522-47e6-919f-7c8fce900ac3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\ai">
+      <UniqueIdentifier>{1297ded1-c4cd-49d0-875b-2934f5deae7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\spriteButton">
+      <UniqueIdentifier>{b6e5acd9-118e-441b-bd93-3d50854100ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\layer\shade">
+      <UniqueIdentifier>{9c7d57f8-e815-4118-9e9a-18ff76a6343f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -93,23 +96,11 @@
     <ClCompile Include="..\Classes\layer\LogoLayer.cpp">
       <Filter>src\layer</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\layer\MainLayer.cpp">
-      <Filter>src\layer</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\layer\fight\card\CardLayout.cpp">
       <Filter>src\layer\fight\card</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\layer\login\LoginLayout.cpp">
       <Filter>src\layer\login</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\layer\main\MainLayout.cpp">
-      <Filter>src\layer\main</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\layer\shade\RecvingLayer.cpp">
-      <Filter>src\layer\shade</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\layer\shade\ShadeLayer.cpp">
-      <Filter>src\layer\shade</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\logic\ChessLogic.cpp">
       <Filter>src\logic</Filter>
@@ -118,9 +109,6 @@
       <Filter>src\logic</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\logic\TcpLogic.cpp">
-      <Filter>src\logic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\logic\WaitTime.cpp">
       <Filter>src\logic</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\logic\CenterLogic.cpp">
@@ -184,6 +172,42 @@
     <ClCompile Include="..\Classes\layer\role\CreateRoleLayout.cpp">
       <Filter>src\layer\role</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\layer\fight\card\GameMenuLayout.cpp">
+      <Filter>src\layer\fight\card</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\layer\fight\card\GameCard.cpp">
+      <Filter>src\layer\fight\card</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ai\BaseAI.cpp">
+      <Filter>src\ai</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ai\GameAI.cpp">
+      <Filter>src\ai</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\logic\WaitTime.cpp">
+      <Filter>src\logic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\logic\WaitTime2.cpp">
+      <Filter>src\logic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\spriteButton\SpriteButton.cpp">
+      <Filter>src\spriteButton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\layer\fight\card\GameRuleLayout.cpp">
+      <Filter>src\layer\fight\card</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\layer\fight\card\CalculateLayout.cpp">
+      <Filter>src\layer\fight\card</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\layer\fight\card\GameOverLayout.cpp">
+      <Filter>src\layer\fight\card</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\layer\shade\ShadeLayer.cpp">
+      <Filter>src\layer\shade</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\layer\shade\RecvingLayer.cpp">
+      <Filter>src\layer\shade</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -212,12 +236,6 @@
     </ClInclude>
     <ClInclude Include="..\Classes\layer\LogoLayer.h">
       <Filter>src\layer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\layer\MainLayer.h">
-      <Filter>src\layer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\layer\shade\ShadeLayer.h">
-      <Filter>src\layer\shade</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\logic\GameLogic.h">
       <Filter>src\logic</Filter>
@@ -301,6 +319,21 @@
     </ClInclude>
     <ClInclude Include="..\Classes\tools\ConfigFileMan.h">
       <Filter>src\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\layer\fight\card\GameCard.h">
+      <Filter>src\layer\fight\card</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ai\ai.h">
+      <Filter>src\ai</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\msg\msgFight.h">
+      <Filter>src\msg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\spriteButton\SpriteButton.h">
+      <Filter>src\spriteButton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\layer\shade\ShadeLayer.h">
+      <Filter>src\layer\shade</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

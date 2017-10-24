@@ -28,14 +28,13 @@ bool RoleLayout::init()
 	//添加事件监听
 	pageView_SelectPage->addEventListener(CC_CALLBACK_2(RoleLayout::pageViewEvent, this));
 
-	//this->addRecvingLayer();
-	TcpLogic::GetInstance()->CreatLinkerSocket();
-
 	roleCount = pageView_SelectPage->getPages().size();
 
 	pageView_SelectPage->setCurPageIndex(GameManage::GetInstance()->GetCurOccuId() - 1);
 
 	this->PageCurIndexChange();
+
+	this->SenceLoad();
 
 	return true;
 }
@@ -58,22 +57,14 @@ void RoleLayout::registerMessage()
 {
 	MsgManager* manager = MsgManager::GetInstance();
 	manager->Reg(MSG_REQ_OUT_TIME, this);
-	manager->Reg(MSG_CONNECT_LINK_RES, this);
-	manager->Reg(MSG_LOGIN_LINK_RES, this);
-	manager->Reg(MSG_QUERY_ROLE_RES, this);
 	manager->Reg(MSG_ENTER_ROLE_RES, this);
-	manager->Reg(MSG_JOIN_CHANNEL_RES, this);
 }
 
 void RoleLayout::unregisterMessage()
 {
 	MsgManager* manager = MsgManager::GetInstance();
 	manager->Unreg(MSG_REQ_OUT_TIME, this);
-	manager->Unreg(MSG_CONNECT_LINK_RES, this);
-	manager->Unreg(MSG_LOGIN_LINK_RES, this);
-	manager->Unreg(MSG_QUERY_ROLE_RES, this);
 	manager->Unreg(MSG_ENTER_ROLE_RES, this);
-	manager->Unreg(MSG_JOIN_CHANNEL_RES, this);
 }
 
 void RoleLayout::removeRecvingLayer()
@@ -162,46 +153,7 @@ void RoleLayout::PageCurIndexChange()
 	}
 }
 
-void RoleLayout::ConnectLinkRes()
-{
-	TcpLogic::GetInstance()->LoginLinkReq();
-}
-
-int RoleLayout::LoginLinkRes(void* pBuf)
-{
-	//this->removeRecvingLayer();
-	UINT16 ret = *(UINT16*)pBuf;
-	if (ret != LCS_OK)
-	{
-		char str[48];
-		sprintf(str, "登陆link错误,错误码：%d", ret);
-		MessageBox(str, "提示");
-	}
-	else//先默认选择进入一个角色
-	{
-		TcpLogic::GetInstance()->QueryRolesReq();
-	}
-
-	return ret;
-}
-
-int RoleLayout::QueryRoleRes(void* pBuf)
-{
-	UINT16 ret = *(UINT16*)pBuf;
-	if (ret != LCS_OK)
-	{
-		char str[48];
-		sprintf(str, "查询角色错误,错误码：%d", ret);
-		MessageBox(str, "提示");
-	}
-	{
-		//这儿不直接写回调函数是为了切换下一帧去切换界面，否者要报错
-		this->scheduleOnce(schedule_selector(RoleLayout::SenceLoad), 0.1f);
-	}
-	return ret;
-}
-
-void RoleLayout::SenceLoad(float a)
+void RoleLayout::SenceLoad()
 {
 	list<SQueryRoleAttr*>::iterator lstIter = TcpLogic::GetInstance()->containerRoleAttr.begin();
 	string curPartitionName = "";
@@ -220,6 +172,14 @@ void RoleLayout::SenceLoad(float a)
 	}
 }
 
+void RoleLayout::FightChangeSence(float a)
+{
+	this->removeRecvingLayer();
+	CardLayer* cardLayer = CardLayer::create();
+	cardLayer->retain();
+	MsgManager::GetInstance()->Dispather(MessageHead::MSG_START_LOADING, cardLayer);
+}
+
 int RoleLayout::EnterRoleRes(void* pBuf)
 {
 	this->removeRecvingLayer();
@@ -232,21 +192,9 @@ int RoleLayout::EnterRoleRes(void* pBuf)
 	}
 	else
 	{
-		//this->addRecvingLayer();
-		//TcpLogic::GetInstance()->JoinChannelReq();
-	}
-	return ret;
-}
-
-int RoleLayout::JoinChannelRes(void* pBuf)
-{
-	this->removeRecvingLayer();
-	UINT16 ret = *(UINT16*)pBuf;
-	if (ret != LCS_OK)
-	{
-		char str[48];
-		sprintf(str, "加入聊天频道错误,错误码：%d", ret);
-		MessageBox(str, "提示");
+		//这儿不直接写回调函数是为了切换下一帧去切换界面，否者要报错
+		GameManage::GetInstance()->SetCurOccuId(pageView_SelectPage->getCurPageIndex() + 1);
+		this->scheduleOnce(schedule_selector(RoleLayout::FightChangeSence), 0.1f);
 	}
 	return ret;
 }
@@ -259,20 +207,8 @@ void RoleLayout::OnMessage(const int head, void* data)
 		this->removeRecvingLayer();
 		MessageBox("连接超时", "提示");
 		break;
-	case MSG_CONNECT_LINK_RES:
-		this->ConnectLinkRes();
-		break;
-	case MSG_LOGIN_LINK_RES:
-		this->LoginLinkRes(data);
-		break;
-	case MSG_QUERY_ROLE_RES:
-		this->QueryRoleRes(data);
-		break;
 	case MSG_ENTER_ROLE_RES:
 		this->EnterRoleRes(data);
-		break;
-	case MSG_JOIN_CHANNEL_RES:
-		this->JoinChannelRes(data);
 		break;
 	default:
 		break;

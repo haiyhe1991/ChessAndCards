@@ -24,7 +24,7 @@ public:
 
 	SpriteFrame*				Get_resource_from_plist(const char* name);	//plist文件中取出资源
 	Node*						Get_ui_resource(const char* path);			//获取已经加载的ui资源		
-	Node*						Get_ani_resource(const char* path);			//获取已经加载的动画资源
+	ActionTimeline*				Get_ani_resource(const char* path);			//获取已经加载的动画资源
 
 	void						Sync_load(LoadItem item);					//加载
 	void						Release(list<LoadItem> lst);				//销毁内存
@@ -36,7 +36,7 @@ private:
 
 	map<string, Node*>			_uiMaps;									//ui资源的存储容器
 
-	map<string, Node*>			_aniMaps;									//动画资源的存储容器
+	map<string, ActionTimeline*>			_aniMaps;									//动画资源的存储容器
 
 };
 

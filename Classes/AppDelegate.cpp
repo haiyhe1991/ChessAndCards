@@ -2,6 +2,7 @@
 #include "stage/stage.h"
 #include "msg/message.h"
 #include "game_record/GameRecord.h"
+#include "csv/csv.h"
 
 USING_NS_CC;
 
@@ -77,6 +78,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
     //}
 
     register_all_packages();
+
+	//csv
+	CsvData::GetInstance();
 
 	GameRecord::getInstance()->LoadData();
 

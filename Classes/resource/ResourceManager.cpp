@@ -39,7 +39,7 @@ void ResourceManager::Sync_unload_plist(const char* path)
 
 void ResourceManager::Sync_load_animation(const char* path)
 {
-	Node* item = CSLoader::createNode(path);
+	ActionTimeline* item = CSLoader::createTimeline(path);
 	if (item != nullptr)
 	{
 		item->retain();
@@ -49,10 +49,10 @@ void ResourceManager::Sync_load_animation(const char* path)
 
 void ResourceManager::Sync_unload_animation(const char* path)
 {
-	map<string, Node*>::iterator iter = _aniMaps.find(path);
+	map<string, ActionTimeline*>::iterator iter = _aniMaps.find(path);
 	if (iter != _aniMaps.end())
 	{
-		Node* item = iter->second;
+		ActionTimeline* item = iter->second;
 		item->release();
 		_aniMaps.erase(iter);
 	}
@@ -95,12 +95,12 @@ Node* ResourceManager::Get_ui_resource(const char* path)
 	return nullptr;
 }
 
-Node* ResourceManager::Get_ani_resource(const char* path)
+ActionTimeline* ResourceManager::Get_ani_resource(const char* path)
 {
-	map<string, Node*>::iterator iter = _aniMaps.find(path);
+	map<string, ActionTimeline*>::iterator iter = _aniMaps.find(path);
 	if (iter != _aniMaps.end())
 	{
-		Node* item = iter->second;
+		ActionTimeline* item = iter->second;
 		return item;
 	}
 	return nullptr;
@@ -126,7 +126,7 @@ void ResourceManager::Sync_load(LoadItem item)
 	{
 		this->Sync_load_plist(item.path);
 	}
-	else if (item.type == LoadType::ARMATURE)
+	else if (item.type == LoadType::ANIMATION)
 	{
 		this->Sync_load_animation(item.path);
 	}
@@ -146,7 +146,7 @@ void ResourceManager::Release(list<LoadItem> lst)
 		{
 			this->Sync_unload_plist(item.path);
 		}
-		else if (item.type == LoadType::ARMATURE)
+		else if (item.type == LoadType::ANIMATION)
 		{
 			this->Sync_unload_animation(item.path);
 		}

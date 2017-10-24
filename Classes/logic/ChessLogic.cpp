@@ -9,6 +9,12 @@ ChessLogic::~ChessLogic()
 {
 	distribute_lst.clear();
 	recycle_lst.clear();
+	vector<Poker*>::iterator iter = poker_vec.begin();
+	while (iter != poker_vec.end())
+	{
+		delete (*iter);
+		iter++;
+	}
 	poker_vec.clear();
 }
 
@@ -24,12 +30,14 @@ void ChessLogic::WashChess()
 	int count = WASH_COUNT;
 	while (count > 0)
 	{
+		srand(timeGetTime());
 		random_shuffle(poker_vec.begin(), poker_vec.end());
 		count--;
 	}
 	vector<Poker*>::iterator iter = poker_vec.begin();
 	while (iter != poker_vec.end())
 	{
+		(*iter)->particularity = true;//所有牌的特殊性置为有效
 		distribute_lst.push_back(*(*iter));
 		iter++;
 	}
@@ -51,6 +59,11 @@ void ChessLogic::RecyclePoker(Poker poker)
 	recycle_lst.push_back(poker);
 }
 
+int ChessLogic::GetDistributeCount()
+{
+	return distribute_lst.size();
+}
+
 /************************************************************************/
 /* private method                                                       */
 /************************************************************************/
@@ -60,23 +73,25 @@ void ChessLogic::initPoker()
 	int index = 0;
 	int count = 2;
 
-	//vector<Poker*> vec(TOTAL_POKER_NUMBER);
-	//while (count > 0)
-	//{
-	//	for (int color = 1; color <= POKER_COLOR_NUMBER; color++)
-	//	{
-	//		for (int point = 1; point <= POKER_POINT_COLOR; index++, point++)
-	//		{
-	//			Poker* poker = new Poker;
-	//			poker->color = (PokerColor)color;
-	//			poker->point = (PokerPoint)point;
-	//			poker->score = getPokerScore(poker->point);
-	//			vec[index] = poker;
-	//		}
-	//	}
-	//	count--;
-	//}
-	//poker_vec = vec;
+	vector<Poker*> vec(TOTAL_POKER_NUMBER);
+	while (count > 0)
+	{
+		for (int color = 1; color <= POKER_COLOR_NUMBER; color++)
+		{
+			for (int point = 1; point <= POKER_POINT_COLOR; index++, point++)
+			{
+				Poker* poker = new Poker;
+				poker->count = (PokerCount)count;
+				poker->color = (PokerColor)color;
+				poker->point = (PokerPoint)point;
+				poker->particularity = true;
+				poker->score = getPokerScore(poker->point);
+				vec[index] = poker;
+			}
+		}
+		count--;
+	}
+	poker_vec = vec;
 }
 
 int ChessLogic::getPokerScore(PokerPoint point)
@@ -97,27 +112,34 @@ int ChessLogic::getPokerScore(PokerPoint point)
 
 void ChessLogic::mixPoker()
 {
-	vector<Poker> vec(recycle_lst.size());
-	list<Poker>::iterator iter = recycle_lst.begin();
-	int index = 0;
-	while (iter != recycle_lst.end())
+	if (recycle_lst.size() > 1)
 	{
-		vec[index] = *iter;
-		iter++;
-		index++;
+		vector<Poker> vec(recycle_lst.size());
+		list<Poker>::iterator iter2 = --recycle_lst.end();
+		Poker poker = *iter2;
+		recycle_lst.erase(iter2);//把最后的一张牌拿出来不混合。
+		list<Poker>::iterator iter = recycle_lst.begin();
+		int index = 0;
+		while (iter != recycle_lst.end())
+		{
+			vec[index] = *iter;
+			iter++;
+			index++;
+		}
+		int count = WASH_COUNT;
+		while (count > 0)
+		{
+			random_shuffle(vec.begin(), vec.end());
+			count--;
+		}
+		vector<Poker>::iterator vecItor = vec.begin();
+		while (vecItor != vec.end())
+		{
+			distribute_lst.push_back(*vecItor);
+			vecItor++;
+		}
+		recycle_lst.clear();
+		recycle_lst.push_back(poker);
 	}
-	int count = WASH_COUNT;
-	while (count > 0)
-	{
-		random_shuffle(vec.begin(), vec.end());
-		count--;
-	}
-	vector<Poker>::iterator vecItor = vec.begin();
-	while (vecItor != vec.end())
-	{
-		distribute_lst.push_back(*vecItor);
-		vecItor++;
-	}
-	recycle_lst.clear();
 }
 

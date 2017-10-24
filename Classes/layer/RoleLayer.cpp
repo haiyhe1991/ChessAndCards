@@ -19,6 +19,8 @@ list<LoadItem> RoleLayer::getResourceList()
 	list<LoadItem> lst = BaseLayer::getResourceList();
 	lst.push_back(LoadItem(LoadType::UI, "ui/role/role.csb"));
 	lst.push_back(LoadItem(LoadType::UI, "ui/role/CreateRoleNode.csb"));
+	lst.push_back(LoadItem(LoadType::UI, "animation/RecvingNode.csb"));
+	lst.push_back(LoadItem(LoadType::ANIMATION, "animation/RecvingNode.csb"));
 	return lst;
 }
 
