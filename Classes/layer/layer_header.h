@@ -8,6 +8,7 @@
 #include "PartitionLayer.h"
 #include "shade/ShadeLayer.h"
 #include "RoleLayer.h"
+#include "RoomLayer.h"
 #include "CardLayer.h"
 
 #endif

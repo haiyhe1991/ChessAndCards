@@ -1,7 +1,7 @@
 #include "GameLogic.h"
 #include "ai/ai.h"
 #include "msg/msgFight.h"
-PlayerLogic::PlayerLogic(bool robot,int id)
+PlayerLogic::PlayerLogic(bool robot, int id, char* name)
 {
 	this->robot = robot;
 	this->id = id;
@@ -17,7 +17,7 @@ PlayerLogic::PlayerLogic(bool robot,int id)
 	else
 	{
 		nameItem = new NameCsvItem;
-		nameItem->name = "player";
+		nameItem->name = name;// TcpLogic::GetInstance()->m_pSEnterRoleRes->nick;
 		this->ready = false;
 	}
 	//发送消息给显示层，显示头像和名字

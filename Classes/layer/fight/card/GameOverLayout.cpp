@@ -54,9 +54,9 @@ GameOverLayout::~GameOverLayout()
 
 void GameOverLayout::onCloseHandler(Ref* sender)
 {
-	RoleLayer* roleLayer = RoleLayer::create();
-	roleLayer->retain();
-	MsgManager::GetInstance()->Dispather(MessageHead::MSG_START_LOADING, roleLayer);
+	RoomLayer* roomLayer = RoomLayer::create();
+	roomLayer->retain();
+	MsgManager::GetInstance()->Dispather(MessageHead::MSG_START_LOADING, roomLayer);
 }
 
 void GameOverLayout::calculateScore(void *data)

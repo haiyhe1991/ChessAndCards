@@ -26,6 +26,10 @@ enum MessageHead
 	MSG_CREATE_ROLE_RES = 2016,			//创建角色响应
 	MSG_ENTER_ROLE_RES = 2017,			//进入角色响应
 	MSG_JOIN_CHANNEL_RES = 2018,			//加入频道响应
+	MSG_CREATE_TABLE_RES = 2019,			//创建牌桌响应
+	MSG_JION_TABLE_RES = 2020,				//加入牌桌响应
+	MSG_PALYER_READY_RES = 2021,				//玩家准备牌桌响应
+	MSG_ERROR_RES = 2022,				//服务器返回错误响应
 
 	MSG_START_GAME = 3001,					//开始游戏
 	MSG_ACTION_CHESS = 3002,				//玩家动作

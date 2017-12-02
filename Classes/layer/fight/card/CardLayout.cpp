@@ -22,6 +22,11 @@ bool CardLayout::init()
 	//添加事件监听
 	btPorkPile->addClickEventListener(CC_CALLBACK_1(CardLayout::onPorkPile, this));
 
+	lbUnionId = (Text*)layout->getChildByName("lbUnionId");
+	char str[48] = {};
+	sprintf(str, "%d", (*TcpLogic::GetInstance()->containerJoinTableInfo.begin())->joinId);
+	lbUnionId->setString(str);
+
 	PokerRecycleNode = (Node*)layout->getChildByName("PokerRecycleNode");
 
 	lstColorChoose = (Node*)layout->getChildByName("lstColorChoose");
@@ -88,6 +93,7 @@ void CardLayout::registerMessage()
 	MsgManager* manager = MsgManager::GetInstance();
 	manager->Reg(MSG_REQ_OUT_TIME, this);
 	manager->Reg(MSG_LAYOUT_PALYER_INFO, this);
+	manager->Reg(MSG_LAYOUT_PALYER_READY, this);
 	manager->Reg(MSG_LAYOUT_WASH_PORKS, this);
 	manager->Reg(MSG_LAYOUT_DEAL_PORK, this);
 	manager->Reg(MSG_LAYOUT_HIT_PORK, this);
@@ -98,7 +104,7 @@ void CardLayout::registerMessage()
 	manager->Reg(MSG_LAYOUT_INVALIAD, this);
 	manager->Reg(MSG_LAYOUT_CALCULATE, this);
 	manager->Reg(MSG_JOIN_CHANNEL_RES, this);
-	
+	manager->Reg(MSG_ERROR_RES, this);
 }
 
 void CardLayout::unregisterMessage()
@@ -106,6 +112,7 @@ void CardLayout::unregisterMessage()
 	MsgManager* manager = MsgManager::GetInstance();
 	manager->Unreg(MSG_REQ_OUT_TIME, this);
 	manager->Unreg(MSG_LAYOUT_PALYER_INFO, this);
+	manager->Unreg(MSG_LAYOUT_PALYER_READY, this);
 	manager->Unreg(MSG_LAYOUT_WASH_PORKS, this);
 	manager->Unreg(MSG_LAYOUT_DEAL_PORK, this);
 	manager->Unreg(MSG_LAYOUT_HIT_PORK, this);
@@ -116,6 +123,7 @@ void CardLayout::unregisterMessage()
 	manager->Unreg(MSG_LAYOUT_INVALIAD, this);
 	manager->Unreg(MSG_LAYOUT_CALCULATE, this);
 	manager->Unreg(MSG_JOIN_CHANNEL_RES, this);
+	manager->Unreg(MSG_ERROR_RES, this);
 }
 
 void CardLayout::removeRecvingLayer()
@@ -184,6 +192,9 @@ void CardLayout::initPlayer()
 		sprintf(str,"lbNickRole%d",i);
 		vec[i]->lbRoleNick = (Text*)(player->getChildByName(str));
 
+		sprintf(str, "Portrait%d", i);
+		vec[i]->Portrait = (Sprite*)(player->getChildByName(str));
+
 		sprintf(str, "lbReadyRole%d", i);
 		vec[i]->lbReady = (Text*)(player->getChildByName(str));
 
@@ -251,13 +262,16 @@ void CardLayout::onGameMenuHandler(Ref* sender)
 
 void CardLayout::onReadyHandler(Ref* sender)
 {
-	playerUI_vec[0]->btReady->setVisible(false);
-	playerUI_vec[0]->btUnReady->setVisible(true);
+	//playerUI_vec[0]->btReady->setVisible(false);
+	//playerUI_vec[0]->btUnReady->setVisible(true);
+	//发消息玩家请求准备
+	this->addRecvingLayer();
+	//TcpLogic::GetInstance()->PlayerReadyReq(ready->isReady);
 	char p[MSG_MAX_LENGTH] = {};
 	sReady*	ready = (sReady*)p;
 	ready->id = 0;
 	ready->isReady = true;
-	MsgManager::GetInstance()->Dispather(MSG_LOGIC_PALYER_READY, (void*)ready);
+	MsgManager::GetInstance()->Dispather(MSG_LOGIC_PALYER_READY, ready);
 }
 
 void CardLayout::onCardFrameEvent(Frame* frame)
@@ -343,13 +357,14 @@ void CardLayout::onPorkPile(Ref* sender)
 
 void CardLayout::onUnReadyHandler(Ref* sender)
 {
-	playerUI_vec[0]->btReady->setVisible(true);
-	playerUI_vec[0]->btUnReady->setVisible(false);
+	//发消息玩家请求准备
+	this->addRecvingLayer();
+	//TcpLogic::GetInstance()->PlayerReadyReq(false);
 	char p[MSG_MAX_LENGTH] = {};
 	sReady*	ready = (sReady*)p;
 	ready->id = 0;
 	ready->isReady = false;
-	MsgManager::GetInstance()->Dispather(MSG_LOGIC_PALYER_READY, (void*)ready);
+	MsgManager::GetInstance()->Dispather(MSG_LOGIC_PALYER_READY, ready);
 }
 
 int CardLayout::JoinChannelRes(void* pBuf)
@@ -615,17 +630,39 @@ void CardLayout::OnMessage(const int head, void* data)
 		MessageBox("连接超时", "提示");
 		break;
 	case MSG_LAYOUT_PALYER_INFO:
-		playerUI_vec[((sPlayerInfo*)data)->id]->lbRoleNick->setString(((sPlayerInfo*)data)->name);
-		if (((sPlayerInfo*)data)->isRobot)
+	{
+		int id = ((sPlayerInfo*)data)->id;
+		bool robot = ((sPlayerInfo*)data)->isRobot;
+		const char *name = ((sPlayerInfo*)data)->name.c_str();
+		playerUI_vec[id]->lbScore->setVisible(true);
+		playerUI_vec[id]->lbRoleNick->setVisible(true);
+		if (id != 0)
 		{
-			playerUI_vec[((sPlayerInfo*)data)->id]->lbReady->setVisible(true);
+			playerUI_vec[id]->Portrait->setVisible(true);
 		}
-		//action_iter++;
-		//if (action_iter == playerUI_vec.end())
-		//{
-		//	action_iter = playerUI_vec.begin();
-		//}
+		playerUI_vec[id]->lbRoleNick->setString(name);
+		if (robot)
+		{
+			playerUI_vec[id]->lbReady->setVisible(true);
+		}
 		break;
+	}
+	case MSG_LAYOUT_PALYER_READY:
+	{
+		this->removeRecvingLayer();
+		bool ready = ((sReady*)data)->isReady;
+		int id = ((sReady*)data)->id;
+		if (id == 0)
+		{
+			playerUI_vec[0]->btReady->setVisible(ready);
+			playerUI_vec[0]->btUnReady->setVisible(!ready);
+		}
+		else
+		{
+			playerUI_vec[id]->lbReady->setVisible(ready);
+		}
+		break;
+	}
 	case MSG_LAYOUT_WASH_PORKS:
 		this->WashChess();
 		break;
@@ -667,6 +704,14 @@ void CardLayout::OnMessage(const int head, void* data)
 	case MSG_JOIN_CHANNEL_RES:
 		this->JoinChannelRes(data);
 		break;
+	case MSG_ERROR_RES:
+	{
+		this->removeRecvingLayer();
+		char str[48];
+		sprintf(str, "操作错误,错误码：%d", *(UINT16*)data);
+		MessageBox(str, "提示");
+		break;
+	}
 	default:
 		break;
 	}

@@ -37,6 +37,9 @@ LinkServer::LinkServer()
 	ADD_LINK_PROC_HANDLER(MLS_CREATE_ROLE, CreateRoleRes);
 	ADD_LINK_PROC_HANDLER(MLS_ENTER_ROLE, EnterRoleRes);
 	ADD_LINK_PROC_HANDLER(CHAT_JOIN_CHANNEL, JoinChannelRes);
+	ADD_LINK_PROC_HANDLER(MAU_CREATE_TABLE, CreateTableRes);
+	ADD_LINK_PROC_HANDLER(MAU_JION_TABLE, JoinTableRes);
+	ADD_LINK_PROC_HANDLER(MAU_PLAYER_READY, PlayerReadyRes);
 }
 
 LinkServer::~LinkServer()
@@ -359,3 +362,108 @@ bool LinkServer::ChatMessageSend(BYTE* pChat)
 	return false;
 }
 
+bool LinkServer::CreateTableReq(SCreateTabelReq* req)
+{
+	if (!this->CheckSocket()) return false;
+
+	BOOL isCrypt = 1;
+	int nRawPayloadLen = SGS_REQ_HEAD_LEN + sizeof(SCreateTabelReq);
+	int nEncryptedPayloadLen = isCrypt ? ((nRawPayloadLen + 15) / 16) * 16 : nRawPayloadLen;
+
+	BYTE p[_MAX_MSGSIZE] = { 0 };
+	SGSProtocolHead* pSGSHeader = (SGSProtocolHead*)p;
+	pSGSHeader->isCrypt = isCrypt ? 1 : 0;
+	pSGSHeader->pktType = DATA_PACKET;
+	pSGSHeader->pduLen = nEncryptedPayloadLen;
+	pSGSHeader->hton();
+
+	SGSReqPayload* pReqPayload = (SGSReqPayload*)(p + SGS_PROTO_HEAD_LEN);
+	pReqPayload->rawDataBytes = nRawPayloadLen;
+	pReqPayload->cmdCode = MAU_CREATE_TABLE;
+	pReqPayload->token = GetTickCount();
+	pReqPayload->hton();
+
+	SCreateTabelReq* pCreateTabelReq = (SCreateTabelReq*)((char*)pReqPayload + SGS_REQ_HEAD_LEN);
+	strcpy(pCreateTabelReq->nick, req->nick);
+
+	if (isCrypt)
+		appEncryptDataWithKey((AES_BYTE*)(p + SGS_PROTO_HEAD_LEN), nRawPayloadLen, m_key);
+
+	if (m_sock->SendMsg(p, SGS_PROTO_HEAD_LEN + nEncryptedPayloadLen))
+	{
+		return m_sock->Flush();
+	}
+	return false;
+}
+
+bool LinkServer::JionTableReq(SJoinTableReq* req)
+{
+	if (!this->CheckSocket()) return false;
+
+	BOOL isCrypt = 1;
+	int nRawPayloadLen = SGS_REQ_HEAD_LEN + sizeof(SJoinTableReq);
+	int nEncryptedPayloadLen = isCrypt ? ((nRawPayloadLen + 15) / 16) * 16 : nRawPayloadLen;
+
+	BYTE p[_MAX_MSGSIZE] = { 0 };
+	SGSProtocolHead* pSGSHeader = (SGSProtocolHead*)p;
+	pSGSHeader->isCrypt = isCrypt ? 1 : 0;
+	pSGSHeader->pktType = DATA_PACKET;
+	pSGSHeader->pduLen = nEncryptedPayloadLen;
+	pSGSHeader->hton();
+
+	SGSReqPayload* pReqPayload = (SGSReqPayload*)(p + SGS_PROTO_HEAD_LEN);
+	pReqPayload->rawDataBytes = nRawPayloadLen;
+	pReqPayload->cmdCode = MAU_JION_TABLE;
+	pReqPayload->token = GetTickCount();
+	pReqPayload->hton();
+
+	SJoinTableReq* pJoinTableReq = (SJoinTableReq*)((char*)pReqPayload + SGS_REQ_HEAD_LEN);
+	pJoinTableReq->joinId = req->joinId;
+	strcpy(pJoinTableReq->nick, req->nick);
+	pJoinTableReq->hton();
+
+	if (isCrypt)
+		appEncryptDataWithKey((AES_BYTE*)(p + SGS_PROTO_HEAD_LEN), nRawPayloadLen, m_key);
+
+	if (m_sock->SendMsg(p, SGS_PROTO_HEAD_LEN + nEncryptedPayloadLen))
+	{
+		return m_sock->Flush();
+	}
+	return false;
+}
+
+bool LinkServer::PlayerReadyReq(SReadyTableReq* req)
+{
+	if (!this->CheckSocket()) return false;
+
+	BOOL isCrypt = 1;
+	int nRawPayloadLen = SGS_REQ_HEAD_LEN + sizeof(SJoinTableReq);
+	int nEncryptedPayloadLen = isCrypt ? ((nRawPayloadLen + 15) / 16) * 16 : nRawPayloadLen;
+
+	BYTE p[_MAX_MSGSIZE] = { 0 };
+	SGSProtocolHead* pSGSHeader = (SGSProtocolHead*)p;
+	pSGSHeader->isCrypt = isCrypt ? 1 : 0;
+	pSGSHeader->pktType = DATA_PACKET;
+	pSGSHeader->pduLen = nEncryptedPayloadLen;
+	pSGSHeader->hton();
+
+	SGSReqPayload* pReqPayload = (SGSReqPayload*)(p + SGS_PROTO_HEAD_LEN);
+	pReqPayload->rawDataBytes = nRawPayloadLen;
+	pReqPayload->cmdCode = MAU_PLAYER_READY;
+	pReqPayload->token = GetTickCount();
+	pReqPayload->hton();
+
+	SReadyTableReq* pReadyTableReq = (SReadyTableReq*)((char*)pReqPayload + SGS_REQ_HEAD_LEN);
+	pReadyTableReq->joinId = req->joinId;
+	pReadyTableReq->ready = req->ready;
+	pReadyTableReq->hton();
+
+	if (isCrypt)
+		appEncryptDataWithKey((AES_BYTE*)(p + SGS_PROTO_HEAD_LEN), nRawPayloadLen, m_key);
+
+	if (m_sock->SendMsg(p, SGS_PROTO_HEAD_LEN + nEncryptedPayloadLen))
+	{
+		return m_sock->Flush();
+	}
+	return false;
+}

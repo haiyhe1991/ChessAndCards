@@ -1,0 +1,63 @@
+<PlistInfoProjectFile>
+  <PropertyGroup Type="Plist" Name="CardPlist" ID="e3917ee1-c227-4179-bb85-8691344d5113" Version="2.1.5.0" />
+  <Content ExportType="Png" SortAlgorithm="MaxRects" PicturePadding="2" AllowRotation="True" AllowAnySize="False" AllowTrim="False" ctype="PlistInfoData">
+    <ImageFiles>
+      <FilePathData Path="Card/101.png" />
+      <FilePathData Path="Card/102.png" />
+      <FilePathData Path="Card/103.png" />
+      <FilePathData Path="Card/104.png" />
+      <FilePathData Path="Card/105.png" />
+      <FilePathData Path="Card/106.png" />
+      <FilePathData Path="Card/107.png" />
+      <FilePathData Path="Card/108.png" />
+      <FilePathData Path="Card/109.png" />
+      <FilePathData Path="Card/110.png" />
+      <FilePathData Path="Card/111.png" />
+      <FilePathData Path="Card/112.png" />
+      <FilePathData Path="Card/113.png" />
+      <FilePathData Path="Card/201.png" />
+      <FilePathData Path="Card/202.png" />
+      <FilePathData Path="Card/203.png" />
+      <FilePathData Path="Card/204.png" />
+      <FilePathData Path="Card/205.png" />
+      <FilePathData Path="Card/206.png" />
+      <FilePathData Path="Card/207.png" />
+      <FilePathData Path="Card/208.png" />
+      <FilePathData Path="Card/209.png" />
+      <FilePathData Path="Card/210.png" />
+      <FilePathData Path="Card/211.png" />
+      <FilePathData Path="Card/212.png" />
+      <FilePathData Path="Card/213.png" />
+      <FilePathData Path="Card/301.png" />
+      <FilePathData Path="Card/302.png" />
+      <FilePathData Path="Card/303.png" />
+      <FilePathData Path="Card/304.png" />
+      <FilePathData Path="Card/305.png" />
+      <FilePathData Path="Card/306.png" />
+      <FilePathData Path="Card/307.png" />
+      <FilePathData Path="Card/308.png" />
+      <FilePathData Path="Card/309.png" />
+      <FilePathData Path="Card/310.png" />
+      <FilePathData Path="Card/311.png" />
+      <FilePathData Path="Card/312.png" />
+      <FilePathData Path="Card/313.png" />
+      <FilePathData Path="Card/401.png" />
+      <FilePathData Path="Card/402.png" />
+      <FilePathData Path="Card/403.png" />
+      <FilePathData Path="Card/404.png" />
+      <FilePathData Path="Card/405.png" />
+      <FilePathData Path="Card/406.png" />
+      <FilePathData Path="Card/407.png" />
+      <FilePathData Path="Card/408.png" />
+      <FilePathData Path="Card/409.png" />
+      <FilePathData Path="Card/410.png" />
+      <FilePathData Path="Card/411.png" />
+      <FilePathData Path="Card/412.png" />
+      <FilePathData Path="Card/413.png" />
+      <FilePathData Path="Card/Leftcards1.png" />
+      <FilePathData Path="Card/Leftcards2.png" />
+      <FilePathData Path="Card/Leftcards3.png" />
+    </ImageFiles>
+    <MaxSize Width="512" Height="512" />
+  </Content>
+</PlistInfoProjectFile>

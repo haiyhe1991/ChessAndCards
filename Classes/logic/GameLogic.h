@@ -3,6 +3,7 @@
 
 #include "chessAndCards.h"
 #include "csv/csv.h"
+#include "TcpLogic.h"
 
 #define LOGIC_DELAY_TIME		1000
 
@@ -117,7 +118,7 @@ private:
 class PlayerLogic
 {
 public:
-	PlayerLogic(bool robot,int id);
+	PlayerLogic(bool robot, int id, char* name = "player");
 
 	void					Reset();							//重置玩家状态
 	bool					IsLose();							//是否已经输掉了比赛
@@ -180,6 +181,7 @@ private:
 	int										punish_count;							//惩罚次数
 	WaitTime*								wait;
 	ChessLogic*								chess_logic;							//牌逻辑
+	map<int, BYTE>							tableIdMap;
 
 private:																	//构造
 
@@ -188,6 +190,7 @@ private:																	//构造
 
 	void									initChess();							//初始化牌
 	void									initPlayer();							//初始化玩家和机器人
+	void									changePlayer();							//玩家和机器人有变动
 
 	void									dealChess();							//发牌函数
 	void									actionPlayer(bool start = false);		//确定行动的玩家

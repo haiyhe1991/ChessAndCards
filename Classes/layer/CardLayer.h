@@ -138,6 +138,7 @@ private:
 	struct PlayerUI
 	{
 		Text*					lbRoleNick;			//角色昵称label
+		Sprite*					Portrait;			//头像
 		Text*					lbReady;			//准备label
 		Button*					btReady;			//准备按钮
 		Button*					btUnReady;			//取消准备按钮
@@ -169,6 +170,7 @@ private:
 	vector<PlayerUI*>		playerUI_vec;			//使用vector 方便操作
 	vector<PlayerUI*>::iterator			action_iter;							//当前正在动作的玩家
 
+	Text*					lbUnionId;				//房间号
 	Button*					btChat;					//聊天按钮
 	Button*					btGameMenu;				//游戏菜单按钮
 	Button*					btPorkPile;				//牌堆按钮

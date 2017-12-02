@@ -9,5 +9,6 @@
 #include "ServiceLinker.h"
 #include "ServiceChat.h"
 #include "ServiceMLogic.h"
+#include "ServiceMau.h"
 
 #endif

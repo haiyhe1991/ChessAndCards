@@ -166,11 +166,14 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\layer\LoginLayer.cpp" />
     <ClCompile Include="..\Classes\layer\login\LoginLayout.cpp" />
     <ClCompile Include="..\Classes\layer\LogoLayer.cpp" />
+    <ClCompile Include="..\Classes\layer\RoomLayer.cpp" />
     <ClCompile Include="..\Classes\layer\RoleLayer.cpp" />
     <ClCompile Include="..\Classes\layer\PartitionLayer.cpp" />
     <ClCompile Include="..\Classes\layer\partition\PartitionLayout.cpp" />
     <ClCompile Include="..\Classes\layer\role\CreateRoleLayout.cpp" />
     <ClCompile Include="..\Classes\layer\role\RoleLayout.cpp" />
+    <ClCompile Include="..\Classes\layer\room\JionTableLayout.cpp" />
+    <ClCompile Include="..\Classes\layer\room\RoomLayout.cpp" />
     <ClCompile Include="..\Classes\layer\shade\RecvingLayer.cpp" />
     <ClCompile Include="..\Classes\layer\shade\ShadeLayer.cpp" />
     <ClCompile Include="..\Classes\logic\CenterLogic.cpp" />
@@ -209,6 +212,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\layer\LoadingLayer.h" />
     <ClInclude Include="..\Classes\layer\LoginLayer.h" />
     <ClInclude Include="..\Classes\layer\LogoLayer.h" />
+    <ClInclude Include="..\Classes\layer\RoomLayer.h" />
     <ClInclude Include="..\Classes\layer\RoleLayer.h" />
     <ClInclude Include="..\Classes\layer\PartitionLayer.h" />
     <ClInclude Include="..\Classes\layer\shade\ShadeLayer.h" />
@@ -230,6 +234,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\tcp\ServiceHeader.h" />
     <ClInclude Include="..\Classes\tcp\ServiceLicence.h" />
     <ClInclude Include="..\Classes\tcp\ServiceLinker.h" />
+    <ClInclude Include="..\Classes\tcp\ServiceMau.h" />
     <ClInclude Include="..\Classes\tcp\ServiceMLogic.h" />
     <ClInclude Include="..\Classes\tools\ConfigFileMan.h" />
     <ClInclude Include="..\Classes\tools\StringTools.h" />

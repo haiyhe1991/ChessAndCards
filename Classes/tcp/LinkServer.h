@@ -36,6 +36,12 @@ public:
 
 	bool									ChatMessageSend(BYTE* pChat);//发送聊天信息
 
+	bool									CreateTableReq(SCreateTabelReq* req);			//创建牌桌请求
+
+	bool									JionTableReq(SJoinTableReq* req);			//加入牌桌请求
+
+	bool									PlayerReadyReq(SReadyTableReq* req);			//玩家准备请求
+
 private:
 
 	// DWORD ip 转化为 字符串ip

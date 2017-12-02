@@ -67,6 +67,9 @@
     <Filter Include="src\layer\shade">
       <UniqueIdentifier>{9c7d57f8-e815-4118-9e9a-18ff76a6343f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\layer\room">
+      <UniqueIdentifier>{98bafff3-0afb-4f8f-9c3c-1960bf833a2c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -208,6 +211,15 @@
     <ClCompile Include="..\Classes\layer\shade\RecvingLayer.cpp">
       <Filter>src\layer\shade</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\layer\RoomLayer.cpp">
+      <Filter>src\layer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\layer\room\RoomLayout.cpp">
+      <Filter>src\layer\room</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\layer\room\JionTableLayout.cpp">
+      <Filter>src\layer\room</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -334,6 +346,12 @@
     </ClInclude>
     <ClInclude Include="..\Classes\layer\shade\ShadeLayer.h">
       <Filter>src\layer\shade</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\layer\RoomLayer.h">
+      <Filter>src\layer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\tcp\ServiceMau.h">
+      <Filter>src\tcp</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

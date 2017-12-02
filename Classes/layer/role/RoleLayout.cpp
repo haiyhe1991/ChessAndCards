@@ -175,9 +175,9 @@ void RoleLayout::SenceLoad()
 void RoleLayout::FightChangeSence(float a)
 {
 	this->removeRecvingLayer();
-	CardLayer* cardLayer = CardLayer::create();
-	cardLayer->retain();
-	MsgManager::GetInstance()->Dispather(MessageHead::MSG_START_LOADING, cardLayer);
+	RoomLayer* roomLayer = RoomLayer::create();
+	roomLayer->retain();
+	MsgManager::GetInstance()->Dispather(MessageHead::MSG_START_LOADING, roomLayer);
 }
 
 int RoleLayout::EnterRoleRes(void* pBuf)

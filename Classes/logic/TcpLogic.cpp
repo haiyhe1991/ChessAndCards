@@ -446,3 +446,100 @@ bool TcpLogic::ChatMessageSend(const char*	chatMsg)
 	strcpy(msg, chatMsg);
 	return LinkServer::GetInstance()->ChatMessageSend(p);
 }
+
+bool TcpLogic::CreateTableReq()
+{
+	SCreateTabelReq req;
+	strcpy(req.nick, m_pSEnterRoleRes->nick);
+	this->ChangeTcpState(TcpState::REQ);
+	return LinkServer::GetInstance()->CreateTableReq(&req);
+}
+
+int TcpLogic::CreateTableRes(SGSResPayload* pBuf, int pBufLen)
+{
+	this->ChangeTcpState(TcpState::IDEL);
+	if (pBuf->retCode == MAU_OK)
+	{
+		SJoinTableRes* pJoinTableRes = (SJoinTableRes*)pBuf->data;
+		for (int i = 0; i < pJoinTableRes->rolesCount; ++i)
+		{
+			SJoinTableInfo* pJoinTableInfo = new SJoinTableInfo();
+			*pJoinTableInfo = *(pJoinTableRes->roles + i);
+			pJoinTableInfo->ntoh();
+			containerJoinTableInfo.push_back(pJoinTableInfo);
+		}
+	}
+	MsgManager::GetInstance()->Dispather(MessageHead::MSG_CREATE_TABLE_RES, &(pBuf->retCode));
+	return pBuf->retCode;
+}
+
+bool TcpLogic::JoinTableReq(const char* jionId)
+{
+	SJoinTableReq req;
+	req.joinId = atoi(jionId);
+	strcpy(req.nick, m_pSEnterRoleRes->nick);
+	this->ChangeTcpState(TcpState::REQ);
+	return LinkServer::GetInstance()->JionTableReq(&req);
+}
+
+int TcpLogic::JoinTableRes(SGSResPayload* pBuf, int pBufLen)
+{
+	this->ChangeTcpState(TcpState::IDEL);
+	if (pBuf->retCode == MAU_OK)
+	{
+		SJoinTableRes* pJoinTableRes = (SJoinTableRes*)pBuf->data;
+		for (int i = 0; i < pJoinTableRes->rolesCount; ++i)
+		{
+			SJoinTableInfo* pJoinTableInfo = new SJoinTableInfo();
+			*pJoinTableInfo = *(pJoinTableRes->roles + i);
+			pJoinTableInfo->ntoh();
+			bool have = false;
+			list<SJoinTableInfo* >::iterator it = containerJoinTableInfo.begin();
+			while (it != containerJoinTableInfo.end())
+			{
+				if ((*it)->roleId == pJoinTableInfo->roleId)
+				{
+					have = true;
+					break;
+				}
+				it++;
+			}
+			if (!have)
+			{
+				containerJoinTableInfo.push_back(pJoinTableInfo);
+			}
+		}
+	}
+	MsgManager::GetInstance()->Dispather(MessageHead::MSG_JION_TABLE_RES, &(pBuf->retCode));
+	return pBuf->retCode;
+}
+
+bool TcpLogic::PlayerReadyReq(bool bReady)
+{
+	SReadyTableReq req;
+	req.ready = bReady;
+	req.joinId = 0;
+	list<SJoinTableInfo* >::iterator it = containerJoinTableInfo.begin();
+	if (it != containerJoinTableInfo.end())
+	{
+		req.joinId = (*it)->joinId;
+	}
+	this->ChangeTcpState(TcpState::REQ);
+	return LinkServer::GetInstance()->PlayerReadyReq(&req);
+}
+
+//参数：有效数据buffer，有效数据总长度
+int TcpLogic::PlayerReadyRes(SGSResPayload* pBuf, int pBufLen)
+{
+	this->ChangeTcpState(TcpState::IDEL);
+	if (pBuf->retCode == MAU_OK)
+	{
+		SReadyTableRes* pReadyTableRes = (SReadyTableRes*)pBuf->data;
+		MsgManager::GetInstance()->Dispather(MessageHead::MSG_PALYER_READY_RES, pReadyTableRes);
+	}
+	else
+	{
+		MsgManager::GetInstance()->Dispather(MessageHead::MSG_ERROR_RES, &(pBuf->retCode));
+	}
+	return pBuf->retCode;
+}

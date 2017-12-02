@@ -1,0 +1,164 @@
+<Solution>
+  <PropertyGroup Name="ChessAndCards" Version="2.1.5.0" Type="CocosStudio" />
+  <SolutionFolder>
+    <Group ctype="ResourceGroup">
+      <RootFolder Name=".">
+        <Folder Name="ui">
+          <Folder Name="loading">
+            <Project Name="LoadingScene.csd" Type="Scene" />
+          </Folder>
+          <Folder Name="login">
+            <Project Name="LoginScene.csd" Type="Scene" />
+          </Folder>
+          <Folder Name="logo">
+            <Project Name="LogoScene.csd" Type="Scene" />
+          </Folder>
+          <Folder Name="card">
+            <Project Name="CardScene.csd" Type="Scene" />
+            <Project Name="GameMenuNode.csd" Type="Node" />
+            <Project Name="PlayerNode.csd" Type="Node" />
+            <Project Name="CalculateNode.csd" Type="Node" />
+            <Project Name="GameRuleNode.csd" Type="Node" />
+            <Project Name="GameOverNode.csd" Type="Node" />
+          </Folder>
+          <Folder Name="partition">
+            <Project Name="partition.csd" Type="Scene" />
+          </Folder>
+          <Folder Name="role">
+            <Project Name="role.csd" Type="Scene" />
+            <Project Name="CreateRoleNode.csd" Type="Node" />
+          </Folder>
+          <Folder Name="room">
+            <Project Name="RoomScene.csd" Type="Scene" />
+            <Project Name="RoomNode.csd" Type="Node" />
+            <Project Name="JionRoomNode.csd" Type="Node" />
+          </Folder>
+        </Folder>
+        <Folder Name="animation">
+          <Project Name="aniCard.csd" Type="Node" />
+          <Project Name="hitInvalid.csd" Type="Node" />
+          <Project Name="RecvingNode.csd" Type="Node" />
+        </Folder>
+        <Folder Name="Common">
+          <Image Name="BaS31.png" />
+          <Image Name="BaS32.png" />
+          <Image Name="Frd11.png" />
+          <Image Name="LI01.png" />
+          <Image Name="LI02.png" />
+          <Image Name="login.jpg" />
+          <Image Name="loginIcon.jpg" />
+          <Image Name="logo.jpg" />
+          <Image Name="loading_back.jpg" />
+          <Image Name="role_back.jpg" />
+          <Image Name="Partition_back.jpg" />
+          <Image Name="AP.png" />
+          <Image Name="ASN.png" />
+          <Image Name="Mars .png" />
+          <Image Name="LS01.png" />
+          <Image Name="LS02.png" />
+          <Image Name="LS03.png" />
+          <Image Name="PvPMsgBoard.png" />
+          <Image Name="BaS07.png" />
+          <Image Name="pvpangle03.png" />
+          <Image Name="pvpangle04.png" />
+          <Image Name="pvpangle05.png" />
+          <Image Name="pvpangle06.png" />
+          <Image Name="DS16.png" />
+          <Image Name="BaS08.png" />
+          <Image Name="BaS09.png" />
+          <Image Name="BaS10.png" />
+          <Image Name="Cn14.png" />
+          <Image Name="Cn15.png" />
+          <Image Name="waitServer.png" />
+        </Folder>
+        <Folder Name="Card">
+          <Image Name="Desk.png" />
+          <Image Name="Window_Menu.png" />
+          <Image Name="000.png" />
+          <Image Name="101.png" />
+          <Image Name="102.png" />
+          <Image Name="103.png" />
+          <Image Name="104.png" />
+          <Image Name="105.png" />
+          <Image Name="106.png" />
+          <Image Name="107.png" />
+          <Image Name="108.png" />
+          <Image Name="109.png" />
+          <Image Name="110.png" />
+          <Image Name="111.png" />
+          <Image Name="112.png" />
+          <Image Name="113.png" />
+          <Image Name="201.png" />
+          <Image Name="202.png" />
+          <Image Name="203.png" />
+          <Image Name="204.png" />
+          <Image Name="205.png" />
+          <Image Name="206.png" />
+          <Image Name="207.png" />
+          <Image Name="208.png" />
+          <Image Name="209.png" />
+          <Image Name="210.png" />
+          <Image Name="211.png" />
+          <Image Name="212.png" />
+          <Image Name="213.png" />
+          <Image Name="301.png" />
+          <Image Name="302.png" />
+          <Image Name="303.png" />
+          <Image Name="304.png" />
+          <Image Name="305.png" />
+          <Image Name="306.png" />
+          <Image Name="307.png" />
+          <Image Name="308.png" />
+          <Image Name="309.png" />
+          <Image Name="310.png" />
+          <Image Name="311.png" />
+          <Image Name="312.png" />
+          <Image Name="313.png" />
+          <Image Name="401.png" />
+          <Image Name="402.png" />
+          <Image Name="403.png" />
+          <Image Name="404.png" />
+          <Image Name="405.png" />
+          <Image Name="406.png" />
+          <Image Name="407.png" />
+          <Image Name="408.png" />
+          <Image Name="409.png" />
+          <Image Name="410.png" />
+          <Image Name="411.png" />
+          <Image Name="412.png" />
+          <Image Name="413.png" />
+          <Image Name="Cards.png" />
+          <Image Name="Leftcards1.png" />
+          <Image Name="Leftcards2.png" />
+          <Image Name="Leftcards3.png" />
+          <Image Name="Cardrotate.png" />
+          <Image Name="Portrait_Middle1.png" />
+          <Image Name="Cards2.png" />
+        </Folder>
+        <Folder Name="plist">
+          <PlistInfo Name="CardPlist.csi" Type="Plist" />
+          <PlistInfo Name="ColorTipPlist.csi" Type="Plist" />
+        </Folder>
+        <Folder Name="fight">
+          <Image Name="Colorchoose1.png" />
+          <Image Name="Colorchoose2.png" />
+          <Image Name="Colorchoose3.png" />
+          <Image Name="Colorchoose4.png" />
+          <Image Name="Window_Colortip.png" />
+          <Image Name="Colortip1.png" />
+          <Image Name="Colortip2.png" />
+          <Image Name="Colortip3.png" />
+          <Image Name="Colortip4.png" />
+          <Image Name="Window_Invalid.png" />
+          <Image Name="Window_Score.png" />
+          <Image Name="Window_Rule.png" />
+          <Image Name="Txt_Dialog_Rule.png" />
+          <Image Name="lose.png" />
+          <Image Name="loseClickTip.png" />
+          <Image Name="win.png" />
+          <Image Name="winClickTip.png" />
+        </Folder>
+      </RootFolder>
+    </Group>
+  </SolutionFolder>
+</Solution>

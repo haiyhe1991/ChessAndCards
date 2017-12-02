@@ -1,0 +1,12 @@
+<PlistInfoProjectFile>
+  <PropertyGroup Type="Plist" Name="ColorTipPlist" ID="37ffc91a-b9fb-49b1-9bfc-4991bd8705b0" Version="2.1.5.0" />
+  <Content ExportType="Png" SortAlgorithm="MaxRects" PicturePadding="2" AllowRotation="True" AllowAnySize="False" AllowTrim="False" ctype="PlistInfoData">
+    <ImageFiles>
+      <FilePathData Path="fight/Colortip1.png" />
+      <FilePathData Path="fight/Colortip2.png" />
+      <FilePathData Path="fight/Colortip3.png" />
+      <FilePathData Path="fight/Colortip4.png" />
+    </ImageFiles>
+    <MaxSize Width="1024" Height="1024" />
+  </Content>
+</PlistInfoProjectFile>

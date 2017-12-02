@@ -100,6 +100,18 @@ public:
 
 	bool						ChatMessageSend(const char*	chatMsg);				//发送聊天信息
 
+	bool						CreateTableReq();			//创建牌桌请求
+	//参数：有效数据buffer，有效数据总长度
+	int							CreateTableRes(SGSResPayload* pBuf, int pBufLen);			//创建牌桌响应
+
+	bool						JoinTableReq(const char* jionId);			//加入牌桌请求
+	//参数：有效数据buffer，有效数据总长度
+	int							JoinTableRes(SGSResPayload* pBuf, int pBufLen);			//加入牌桌响应
+
+	bool						PlayerReadyReq(bool bReady);			//准备请求
+	//参数：有效数据buffer，有效数据总长度
+	int							PlayerReadyRes(SGSResPayload* pBuf, int pBufLen);			//准备响应
+
 private:
 
 	TcpLogic();																		//构造
@@ -124,6 +136,7 @@ public:
 
 	list<SQueryRoleAttr* >		containerRoleAttr;										//角色信息
 
+	list<SJoinTableInfo* >		containerJoinTableInfo;									//角色信息
 };
 
 #endif
