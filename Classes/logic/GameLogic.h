@@ -118,7 +118,7 @@ private:
 class PlayerLogic
 {
 public:
-	PlayerLogic(bool robot, int id, char* name = "player");
+	PlayerLogic(bool robot, int id, bool ready, char* name = "player");
 
 	void					Reset();							//重置玩家状态
 	bool					IsLose();							//是否已经输掉了比赛

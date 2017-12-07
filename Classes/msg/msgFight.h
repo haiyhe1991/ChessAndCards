@@ -10,6 +10,7 @@ struct sPlayerInfo
 	int				id;
 	string			name;
 	bool			isRobot;
+	bool			isReady;
 };
 
 struct sReady

@@ -266,12 +266,12 @@ void CardLayout::onReadyHandler(Ref* sender)
 	//playerUI_vec[0]->btUnReady->setVisible(true);
 	//发消息玩家请求准备
 	this->addRecvingLayer();
-	//TcpLogic::GetInstance()->PlayerReadyReq(ready->isReady);
-	char p[MSG_MAX_LENGTH] = {};
-	sReady*	ready = (sReady*)p;
-	ready->id = 0;
-	ready->isReady = true;
-	MsgManager::GetInstance()->Dispather(MSG_LOGIC_PALYER_READY, ready);
+	TcpLogic::GetInstance()->PlayerReadyReq(true);
+	//char p[MSG_MAX_LENGTH] = {};
+	//sReady*	ready = (sReady*)p;
+	//ready->id = 0;
+	//ready->isReady = true;
+	//MsgManager::GetInstance()->Dispather(MSG_LOGIC_PALYER_READY, ready);
 }
 
 void CardLayout::onCardFrameEvent(Frame* frame)
@@ -359,12 +359,12 @@ void CardLayout::onUnReadyHandler(Ref* sender)
 {
 	//发消息玩家请求准备
 	this->addRecvingLayer();
-	//TcpLogic::GetInstance()->PlayerReadyReq(false);
-	char p[MSG_MAX_LENGTH] = {};
-	sReady*	ready = (sReady*)p;
-	ready->id = 0;
-	ready->isReady = false;
-	MsgManager::GetInstance()->Dispather(MSG_LOGIC_PALYER_READY, ready);
+	TcpLogic::GetInstance()->PlayerReadyReq(false);
+	//char p[MSG_MAX_LENGTH] = {};
+	//sReady*	ready = (sReady*)p;
+	//ready->id = 0;
+	//ready->isReady = false;
+	//MsgManager::GetInstance()->Dispather(MSG_LOGIC_PALYER_READY, ready);
 }
 
 int CardLayout::JoinChannelRes(void* pBuf)
@@ -592,7 +592,7 @@ void CardLayout::ResetChess(void* data)
 				sReady*	ready = (sReady*)p;
 				ready->id = i;
 				ready->isReady = true;
-				MsgManager::GetInstance()->Dispather(MSG_LOGIC_PALYER_READY, (void*)ready);
+				//MsgManager::GetInstance()->Dispather(MSG_LOGIC_PALYER_READY, (void*)ready);
 			}
 		}
 
@@ -633,29 +633,36 @@ void CardLayout::OnMessage(const int head, void* data)
 	{
 		int id = ((sPlayerInfo*)data)->id;
 		bool robot = ((sPlayerInfo*)data)->isRobot;
+		bool ready = ((sPlayerInfo*)data)->isReady;
 		const char *name = ((sPlayerInfo*)data)->name.c_str();
 		playerUI_vec[id]->lbScore->setVisible(true);
 		playerUI_vec[id]->lbRoleNick->setVisible(true);
-		if (id != 0)
-		{
-			playerUI_vec[id]->Portrait->setVisible(true);
-		}
 		playerUI_vec[id]->lbRoleNick->setString(name);
 		if (robot)
 		{
 			playerUI_vec[id]->lbReady->setVisible(true);
 		}
+		if (id != 0)
+		{
+			playerUI_vec[id]->Portrait->setVisible(true);
+			playerUI_vec[id]->lbReady->setVisible(ready);
+		}
+		else
+		{
+			playerUI_vec[id]->btReady->setVisible(!ready);
+			playerUI_vec[id]->btUnReady->setVisible(ready);
+		}
 		break;
 	}
 	case MSG_LAYOUT_PALYER_READY:
 	{
-		this->removeRecvingLayer();
 		bool ready = ((sReady*)data)->isReady;
 		int id = ((sReady*)data)->id;
 		if (id == 0)
 		{
-			playerUI_vec[0]->btReady->setVisible(ready);
-			playerUI_vec[0]->btUnReady->setVisible(!ready);
+			this->removeRecvingLayer();
+			playerUI_vec[0]->btReady->setVisible(!ready);
+			playerUI_vec[0]->btUnReady->setVisible(ready);
 		}
 		else
 		{

@@ -1,7 +1,7 @@
 #include "GameLogic.h"
 #include "ai/ai.h"
 #include "msg/msgFight.h"
-PlayerLogic::PlayerLogic(bool robot, int id, char* name)
+PlayerLogic::PlayerLogic(bool robot, int id, bool ready, char* name)
 {
 	this->robot = robot;
 	this->id = id;
@@ -26,6 +26,8 @@ PlayerLogic::PlayerLogic(bool robot, int id, char* name)
 	playerInfo->name = nameItem->name;
 	playerInfo->isRobot = IsRobot();
 	playerInfo->id = GetId();
+	playerInfo->isReady = ready;
+	this->ready = ready;
 	MsgManager::GetInstance()->Dispather(MessageHead::MSG_LAYOUT_PALYER_INFO, (void *)playerInfo);
 }
 

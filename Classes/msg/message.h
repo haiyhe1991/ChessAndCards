@@ -34,7 +34,6 @@ enum MessageHead
 	MSG_START_GAME = 3001,					//开始游戏
 	MSG_ACTION_CHESS = 3002,				//玩家动作
 	MSG_LAYOUT_PALYER_INFO = 3003,			//展示玩家基本信息
-	MSG_LOGIC_PALYER_READY = 3004,			//玩家准备游戏请求
 	MSG_LAYOUT_PALYER_READY = 3005,			//玩家准备游戏响应
 	MSG_LAYOUT_WASH_PORKS = 3006,			//显示层洗牌
 	MSG_LOGIC_WASH_PORKS = 3007,			//逻辑层洗牌完毕

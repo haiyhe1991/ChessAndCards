@@ -33,7 +33,6 @@ void CenterLogic::registerMessage()
 	MsgManager* manager = MsgManager::GetInstance();
 	manager->Reg(MSG_START_GAME, this);
 	manager->Reg(MSG_ACTION_CHESS, this);
-	manager->Reg(MSG_LOGIC_PALYER_READY, this);
 	manager->Reg(MSG_LOGIC_WASH_PORKS, this);
 	manager->Reg(MSG_JION_TABLE_RES, this);
 	manager->Reg(MSG_PALYER_READY_RES, this);
@@ -44,7 +43,6 @@ void CenterLogic::unregisterMessage()
 	MsgManager* manager = MsgManager::GetInstance();
 	manager->Unreg(MSG_START_GAME, this);
 	manager->Unreg(MSG_ACTION_CHESS, this);
-	manager->Unreg(MSG_LOGIC_PALYER_READY, this);
 	manager->Unreg(MSG_LOGIC_WASH_PORKS, this);
 	manager->Unreg(MSG_JION_TABLE_RES, this);
 	manager->Unreg(MSG_PALYER_READY_RES, this);
@@ -113,34 +111,6 @@ void CenterLogic::OnMessage(const int head, void* data)
 		ActionChess action = *((ActionChess*)data);
 		processAction(action);
 	}
-	else if (head == MSG_LOGIC_PALYER_READY)
-	{
-		sReady ready = *((sReady*)data);
-		TcpLogic::GetInstance()->PlayerReadyReq(ready.isReady);
-		//player_vec[ready.id]->SetReadyState(ready.isReady);
-		//if (ready.isReady)
-		//{
-		//	int i = 0;
-		//	for (; i < MAU_PLAYER_NUMBER; ++i)
-		//	{
-		//		if (!player_vec[i]->IsReady() && !player_vec[i]->IsLose())
-		//			break;
-		//	}
-		//	//房间内所有玩家都准备完毕发送消息给显示层洗牌
-		//	if (i == MAU_PLAYER_NUMBER)
-		//	{
-		//		for (int j = 0; j < MAU_PLAYER_NUMBER; ++j)
-		//		{
-		//			//没有输的玩家准备状态取消
-		//			if (!player_vec[j]->IsLose())
-		//			{
-		//				player_vec[j]->SetReadyState(false);
-		//			}
-		//		}
-		//		game_state = GameState::WASHING;
-		//	}
-		//}
-	}
 	else if (head == MSG_LOGIC_WASH_PORKS)
 	{
 		wait->StartWait(1000);
@@ -167,17 +137,28 @@ void CenterLogic::OnMessage(const int head, void* data)
 			}
 			it++;
 		}
-		if (id == -1)
+		bool findId = false;
+		vector<PlayerLogic*>::iterator iter = player_vec.begin();
+		while (iter != player_vec.end())
+		{
+			if ((*iter)->GetId() == id)
+			{
+				findId = true;
+				(*iter)->SetReadyState(ret->ready);
+				char p[MSG_MAX_LENGTH] = {};
+				sReady*	ready = (sReady*)p;
+				ready->id = id;
+				ready->isReady = ret->ready;
+				MsgManager::GetInstance()->Dispather(MessageHead::MSG_LAYOUT_PALYER_READY, ready);
+				break;
+			}
+			iter++;
+		}
+		if (!findId)
 		{
 			UINT16 retCmd = MAU_ID_NOT_EXIST_IN_CHANNEL;
 			MsgManager::GetInstance()->Dispather(MessageHead::MSG_ERROR_RES, &retCmd);
 		}
-		player_vec[id]->SetReadyState(ret->ready);
-		char p[MSG_MAX_LENGTH] = {};
-		sReady*	ready = (sReady*)p;
-		ready->id = id;
-		ready->isReady = ret->ready;
-		MsgManager::GetInstance()->Dispather(MessageHead::MSG_LAYOUT_PALYER_READY, ready);
 	}
 
 }
@@ -286,7 +267,7 @@ void CenterLogic::changePlayer()
 				}
 				if (!HavePalyer)
 				{
-					PlayerLogic* player = new PlayerLogic(false, it->first, (*lstIter)->nick);
+					PlayerLogic* player = new PlayerLogic(false, it->first, (*lstIter)->ready, (*lstIter)->nick);
 					//由于暂时只是单机模式，所以这里写死，收到信息之后，初始化本地玩家以及机器人
 					//玩家始终是在0的位置
 					player_vec.push_back(player);// = vec;

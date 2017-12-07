@@ -12,8 +12,10 @@ bool RecvingLayer::init()
 	ShadeLayer::init();
 
 
-	layout = layout = (Layout*)ResourceManager::GetInstance()->Get_ui_resource("animation/RecvingNode.csb");
+	layout = (Layout*)ResourceManager::GetInstance()->Get_ui_resource("animation/RecvingNode.csb");
 	this->addChild(layout);
+
+	layout->stopAllActions();
 
 	auto antAction = (ActionTimeline*)ResourceManager::GetInstance()->Get_ani_resource("animation/RecvingNode.csb");
 
